@@ -64,6 +64,7 @@
   ::-webkit-scrollbar{width:10px;height:10px;} ::-webkit-scrollbar-thumb{background:#E2E4EA;border-radius:99px;border:2px solid #fff;}
   :focus-visible{outline:2px solid #FF3D77;outline-offset:2px;border-radius:6px;}
   .page-thumb{transition:box-shadow .15s ease;} .page-thumb:hover{box-shadow:0 6px 18px rgba(0,0,0,.10);}
+  .tile-badge svg{ width:16px; height:16px; }
   #sigPad,.placeCanvas{touch-action:none;}
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;} html{scroll-behavior:auto;}}
 </style>
@@ -249,14 +250,17 @@ CATS.forEach(cat=>{ const s=document.createElement("section"); s.dataset.cat=cat
   s.innerHTML=`<h2 class="heading-accent font-display font-semibold text-2xl tracking-tight mb-5" style="--g1:${g[0]};--g2:${g[1]}">${cat}</h2><div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4" data-grid="${cat}"></div>`;
   root.appendChild(s); });
 Object.entries(TOOLS).forEach(([key,t])=>{ const grid=root.querySelector(`[data-grid="${t.cat}"]`);
-  const g=CATG[t.cat]||["#FF6A3D","#A24BFF"];
+  const ac=t.ac, pastel=t.fold;
   const c=document.createElement("button");
-  c.className="tool-card group relative text-left bg-white border border-line rounded-2xl p-5 shadow-sm";
-  c.dataset.name=t.title.toLowerCase(); c.style.setProperty("--glow",hexA(g[1],.45));
-  c.innerHTML=`<div class="badge w-12 h-12 rounded-2xl grid place-items-center mb-4 text-white" style="background:${gradCss(t.cat)}">${t.icon}</div>
-    <h3 class="font-display font-semibold text-[17px] tracking-tight">${t.title}</h3>
-    <p class="text-sm text-muted mt-1.5 leading-relaxed">${t.desc}</p>
-    <span class="arrow inline-flex items-center gap-1 text-sm font-semibold mt-3.5" style="color:${g[1]}">Open<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`;
+  c.className="tool-card group relative text-center rounded-2xl p-5 border";
+  c.dataset.name=t.title.toLowerCase();
+  c.style.background=pastel; c.style.borderColor=hexA(ac,.22); c.style.setProperty("--glow",hexA(ac,.4));
+  c.innerHTML=`<div class="relative w-14 h-14 mx-auto mb-3">
+      <svg viewBox="0 0 40 40" class="w-full h-full drop-shadow-sm"><rect x="6" y="2.5" width="23" height="33" rx="3.5" fill="#fff" stroke="${ac}" stroke-width="1.6"/><path d="M23 2.5v6a1.5 1.5 0 0 0 1.5 1.5H29" fill="none" stroke="${ac}" stroke-width="1.6" stroke-linejoin="round"/><line x1="11" y1="16" x2="22" y2="16" stroke="${hexA(ac,.45)}" stroke-width="1.8" stroke-linecap="round"/><line x1="11" y1="21" x2="24" y2="21" stroke="${hexA(ac,.45)}" stroke-width="1.8" stroke-linecap="round"/><line x1="11" y1="26" x2="19" y2="26" stroke="${hexA(ac,.45)}" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <span class="tile-badge absolute -bottom-1 -right-1 w-8 h-8 rounded-xl grid place-items-center text-white shadow-md" style="background:${ac}">${t.icon}</span>
+    </div>
+    <h3 class="font-display font-semibold text-[15px] tracking-tight text-ink">${t.title}</h3>
+    <p class="text-xs text-muted mt-1 leading-snug">${t.desc}</p>`;
   c.addEventListener("click",()=>selectTool(key)); grid.appendChild(c); });
 
 const srv=document.createElement("section"); srv.dataset.cat="server";
