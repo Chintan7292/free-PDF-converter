@@ -196,12 +196,14 @@
           <div>
             <label class="text-sm font-medium text-muted">From</label>
             <input id="uc-in" type="number" inputmode="decimal" value="1" class="mt-1 w-full rounded-xl border border-line px-4 py-3 text-lg bg-surface outline-none focus:border-brand focus:ring-4 focus:ring-brand/10" />
+            <input id="uc-from-search" type="text" placeholder="Type to search unit…" class="mt-2 w-full rounded-xl border border-line px-4 py-2.5 text-sm bg-surface outline-none focus:border-brand focus:ring-4 focus:ring-brand/10" />
             <select id="uc-from" class="mt-2 w-full rounded-xl border border-line px-4 py-3 bg-surface outline-none focus:border-brand"></select>
           </div>
           <button id="uc-swap" class="mb-2 mx-auto w-11 h-11 rounded-xl border border-line grid place-items-center text-muted hover:text-ink hover:border-muted/40 transition" aria-label="Swap units"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 4v13m0 0-3-3m3 3 3-3M17 20V7m0 0-3 3m3-3 3 3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
           <div>
             <label class="text-sm font-medium text-muted">To</label>
             <input id="uc-out" type="text" readonly class="mt-1 w-full rounded-xl border border-line px-4 py-3 text-lg bg-paper/60 outline-none font-semibold" />
+            <input id="uc-to-search" type="text" placeholder="Type to search unit…" class="mt-2 w-full rounded-xl border border-line px-4 py-2.5 text-sm bg-surface outline-none focus:border-brand focus:ring-4 focus:ring-brand/10" />
             <select id="uc-to" class="mt-2 w-full rounded-xl border border-line px-4 py-3 bg-surface outline-none focus:border-brand"></select>
           </div>
         </div>
@@ -217,7 +219,7 @@
           <p class="font-display font-bold text-xl uppercase">My Convert Box</p>
           <p class="text-white/85 text-sm mt-1">20+ PDF tools, 100% free — right in your browser.</p>
         </div>
-        <a href="#tools" class="shrink-0 bg-surface text-slate-900 font-semibold px-6 py-3 rounded-xl shadow-sm hover:bg-white/90 transition">Explore tools</a>
+        <a href="#tools" data-go="files" class="shrink-0 bg-white text-slate-900 font-semibold px-6 py-3 rounded-xl shadow-sm hover:bg-slate-100 transition">Explore tools</a>
       </div>
       <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-muted">
         <span class="font-display font-bold tracking-tight text-lg uppercase">My <span class="text-grad">Convert</span> Box</span>
@@ -754,6 +756,9 @@ function initUnitConverter(){
     cats.appendChild(b);
   });
   document.getElementById("uc-in").addEventListener("input", ucCompute);
+  const usearch=document.getElementById("uc-search"); if(usearch) usearch.addEventListener("input", (e)=>ucSearch(e.target.value));
+  const fs=document.getElementById("uc-from-search"); if(fs) fs.addEventListener("input", ()=>filterSelect("from"));
+  const ts=document.getElementById("uc-to-search"); if(ts) ts.addEventListener("input", ()=>filterSelect("to"));
   document.getElementById("uc-from").addEventListener("change", ucCompute);
   document.getElementById("uc-to").addEventListener("change", ucCompute);
   document.getElementById("uc-swap").addEventListener("click", ()=>{
@@ -772,8 +777,46 @@ function selectUCat(k){
   if(UC[k].currency){ note.textContent = "Fetching live exchange rates…"; loadRates().then(fillUnits).catch(()=>{ note.textContent="Currency rates need an internet connection."; }); }
   else { note.textContent = ""; fillUnits(); }
 }
+function filterSelect(side){
+  const c = UC[ucKey];
+  const all = c.currency ? Object.keys(ucRates||{}).filter(n=>n!=="__date") : Object.keys(c.units);
+  const sel = document.getElementById(side==="from"?"uc-from":"uc-to");
+  const box = document.getElementById(side==="from"?"uc-from-search":"uc-to-search");
+  if(!sel||!box) return;
+  const q = (box.value||"").trim().toLowerCase();
+  const cur = sel.value;
+  const filtered = q ? all.filter(n=>n.toLowerCase().includes(q)) : all;
+  const list = filtered.length ? filtered : all;
+  sel.innerHTML = "";
+  list.forEach(n=>sel.appendChild(new Option(n,n)));
+  if(list.some(n=>n===cur)) sel.value = cur;
+  ucCompute();
+}
+function ucSearch(q){
+  q = (q||"").trim().toLowerCase();
+  const pills = [...document.querySelectorAll("#uc-cats button")];
+  if(!q){ pills.forEach(b=>b.style.display=""); return; }
+  let best = null;
+  pills.forEach(b=>{
+    const k = b.dataset.k, c = UC[k];
+    const labelHit = c.label.toLowerCase().includes(q);
+    const names = c.currency ? Object.keys(ucRates||{}).filter(n=>n!=="__date") : Object.keys(c.units);
+    let unitName = null;
+    for(const n of names){ if(n.toLowerCase().includes(q)){ unitName = n; break; } }
+    const show = labelHit || !!unitName;
+    b.style.display = show ? "" : "none";
+    if(!best && unitName) best = {k, unitName};
+    else if(!best && labelHit) best = {k, unitName:null};
+  });
+  if(best && q.length>=2){
+    if(best.k!==ucKey) selectUCat(best.k);
+    if(best.unitName){ const from=document.getElementById("uc-from"); if([...from.options].some(o=>o.value===best.unitName)){ from.value=best.unitName; ucCompute(); } }
+  }
+}
 function fillUnits(){
   const c = UC[ucKey];
+  const fb=document.getElementById("uc-from-search"), tb=document.getElementById("uc-to-search");
+  if(fb) fb.value=""; if(tb) tb.value="";
   const names = c.currency ? Object.keys(ucRates||{}).filter(n=>n!=="__date") : Object.keys(c.units);
   const from = document.getElementById("uc-from"), to = document.getElementById("uc-to");
   from.innerHTML = ""; to.innerHTML = "";
