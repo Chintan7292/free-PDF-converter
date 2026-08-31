@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>My Convert Box — PDF & Unit Converter Tools</title>
 <meta name="description" content="Free, private, in-browser PDF tools. Merge, split, convert, compress, sign, OCR and more — no sign-up, no uploads, works offline. Your files never leave your device." />
-<meta name="theme-color" content="#FF3D77" />
+<meta name="theme-color" content="#0F172A" />
 <link rel="manifest" href="./manifest.webmanifest" />
 <link rel="apple-touch-icon" href="./icon-192.png" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -28,58 +28,50 @@
 
 <script>
   tailwind.config = { theme: { extend: {
-    colors: { paper:"#F7F8FA", ink:"#141520", muted:"#5B6070", line:"#EAECF1", brand:"#FF3D77", "brand-dark":"#E92E66" },
+    colors: { page:"#0F172A", surface:"#1E293B", paper:"#182234", ink:"#F8FAFC", muted:"#94A3B8", line:"rgba(255,255,255,0.08)", brand:"#3B82F6", "brand-dark":"#2563EB", emerald2:"#10B981" },
     fontFamily: { display:['"Space Grotesk"',"sans-serif"], sans:['Inter',"sans-serif"] },
   }}};
 </script>
 
 <style>
-  html { scroll-behavior:smooth; } body { background:#FFFFFF; }
-
-  /* ---- vibrant gradient system ---- */
-  .grad-brand{ background-image:linear-gradient(120deg,#FF6A3D 0%,#FF3D77 48%,#A24BFF 100%); }
-  .text-grad{ background-image:linear-gradient(120deg,#FF6A3D,#FF3D77 55%,#A24BFF); -webkit-background-clip:text; background-clip:text; color:transparent; }
-  .heading-accent::after{ content:""; display:block; width:52px; height:4px; border-radius:99px; margin-top:10px; background-image:linear-gradient(90deg,var(--g1,#FF6A3D),var(--g2,#A24BFF)); }
-
-  /* hero mesh — pure CSS, static (no animation) */
-  .hero-mesh{ position:absolute; inset:0; z-index:-1;
-    background:
-      radial-gradient(38% 55% at 12% 18%, rgba(255,106,61,.30), transparent 60%),
-      radial-gradient(42% 60% at 88% 12%, rgba(162,75,255,.28), transparent 60%),
-      radial-gradient(45% 60% at 78% 92%, rgba(34,199,224,.26), transparent 60%),
-      radial-gradient(40% 55% at 22% 95%, rgba(255,61,119,.24), transparent 60%),
-      #ffffff;
-  }
-  .hero-grid{ position:absolute; inset:0; z-index:-1; opacity:.5;
-    background-image:linear-gradient(#eef0f4 1px,transparent 1px),linear-gradient(90deg,#eef0f4 1px,transparent 1px);
+  html { scroll-behavior:smooth; } body { background:#0F172A; color:#F8FAFC; }
+  .grad-brand{ background-image:linear-gradient(120deg,#3B82F6,#2563EB); }
+  .grad-emerald{ background-image:linear-gradient(120deg,#10B981,#059669); }
+  .text-grad{ background-image:linear-gradient(120deg,#3B82F6,#10B981); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .heading-accent::after{ content:""; display:block; width:52px; height:4px; border-radius:99px; margin-top:10px; background-image:linear-gradient(90deg,#3B82F6,#10B981); }
+  .hero-mesh{ position:absolute; inset:0; z-index:-1; background:
+    radial-gradient(40% 55% at 15% 18%, rgba(59,130,246,.22), transparent 60%),
+    radial-gradient(42% 60% at 85% 14%, rgba(16,185,129,.16), transparent 60%),
+    radial-gradient(45% 60% at 80% 92%, rgba(59,130,246,.16), transparent 60%),
+    #0F172A; }
+  .hero-grid{ position:absolute; inset:0; z-index:-1;
+    background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
     background-size:44px 44px; mask-image:radial-gradient(70% 70% at 50% 40%,#000 40%,transparent 100%); -webkit-mask-image:radial-gradient(70% 70% at 50% 40%,#000 40%,transparent 100%);}
-
-  /* tool cards */
-  .tool-card{ transition:transform .16s ease, box-shadow .16s ease; }
-  .tool-card:hover{ transform:translateY(-4px); box-shadow:0 18px 40px -12px var(--glow,rgba(255,61,119,.45)); }
-  .tool-card .badge{ box-shadow:0 8px 20px -6px var(--glow,rgba(255,61,119,.5)); }
-  .tool-card .arrow{ transition:transform .16s ease; }
-  .tool-card:hover .arrow{ transform:translateX(3px); }
-
-  .dropzone.drag{ border-color:var(--accent,#FF3D77); background:color-mix(in srgb, var(--accent,#FF3D77) 8%, #fff); }
+  .tool-card{ transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease; }
+  .tool-card:hover{ transform:translateY(-4px); box-shadow:0 18px 40px -12px var(--glow,rgba(59,130,246,.45)); border-color:rgba(255,255,255,.18) !important; }
+  .tool-card .badge{ box-shadow:0 8px 20px -6px var(--glow,rgba(59,130,246,.5)); }
+  .tool-card .arrow{ transition:transform .16s ease; } .tool-card:hover .arrow{ transform:translateX(3px); }
+  .mode-card{ transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease; }
+  .mode-card:hover{ transform:translateY(-4px); box-shadow:0 20px 45px -14px var(--glow,rgba(59,130,246,.5)); border-color:rgba(255,255,255,.18) !important; }
+  .mode-card .arrow{ transition:transform .16s ease; } .mode-card:hover .arrow{ transform:translateX(4px); }
+  .dropzone{ background:#182234 !important; border-color:#3B82F6 !important; }
+  .dropzone.drag{ border-color:#60A5FA !important; background:#1b2942 !important; box-shadow:0 0 15px rgba(59,130,246,.2); }
   .spin{animation:spin .7s linear infinite;} @keyframes spin{to{transform:rotate(360deg);}}
   .toast-in{animation:toastIn .3s cubic-bezier(.2,.8,.2,1) forwards;} @keyframes toastIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
   .reveal{animation:reveal .3s ease forwards;} @keyframes reveal{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
-  ::-webkit-scrollbar{width:10px;height:10px;} ::-webkit-scrollbar-thumb{background:#E2E4EA;border-radius:99px;border:2px solid #fff;}
-  :focus-visible{outline:2px solid #FF3D77;outline-offset:2px;border-radius:6px;}
-  .page-thumb{transition:box-shadow .15s ease;} .page-thumb:hover{box-shadow:0 6px 18px rgba(0,0,0,.10);}
+  ::-webkit-scrollbar{width:10px;height:10px;} ::-webkit-scrollbar-thumb{background:#334155;border-radius:99px;border:2px solid #0F172A;}
+  :focus-visible{outline:2px solid #3B82F6;outline-offset:2px;border-radius:6px;}
+  .page-thumb{transition:box-shadow .15s ease;} .page-thumb:hover{box-shadow:0 6px 18px rgba(0,0,0,.4);}
   .tile-badge svg{ width:16px; height:16px; }
-  .mode-card{ transition:transform .16s ease, box-shadow .16s ease; }
-  .mode-card:hover{ transform:translateY(-4px); box-shadow:0 20px 45px -14px var(--glow,rgba(255,61,119,.45)); }
-  .mode-card .arrow{ transition:transform .16s ease; } .mode-card:hover .arrow{ transform:translateX(4px); }
-  #sigPad,.placeCanvas{touch-action:none;}
+  input,select,textarea{ color-scheme:dark; }
+  input::placeholder,textarea::placeholder{ color:#64748B; }
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;} html{scroll-behavior:auto;}}
 </style>
 </head>
 
 <body class="font-sans text-ink antialiased">
 
-  <header class="sticky top-0 z-40 backdrop-blur-xl bg-white/80 border-b border-line/80">
+  <header class="sticky top-0 z-40 backdrop-blur-xl bg-[#0F172A]/85 border-b border-line">
     <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
       <a href="#" data-go="home" class="flex items-center gap-2.5" aria-label="My Convert Box home">
         <span class="w-9 h-9 rounded-xl grad-brand grid place-items-center text-white shadow-sm shadow-brand/30"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 8l9-5 9 5v8l-9 5-9-5V8Z" stroke-linejoin="round"/><path d="m3 8 9 5 9-5M12 13v8" stroke-linejoin="round"/></svg></span>
@@ -103,17 +95,17 @@
       <h1 class="font-display font-bold tracking-tight leading-[0.95] mt-6 text-5xl sm:text-6xl md:text-7xl">What do you want<br class="hidden sm:block" /> to <span class="text-grad">convert?</span></h1>
       <p class="mt-5 text-lg sm:text-xl text-muted max-w-2xl mx-auto leading-relaxed">Pick a toolkit below. Everything runs right in your browser — nothing is uploaded.</p>
       <div class="mt-12 grid sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
-        <button data-go="files" class="mode-card group text-left bg-white border border-line rounded-3xl p-8 shadow-sm" style="--glow:rgba(255,61,119,.4)">
-          <div class="w-16 h-16 rounded-2xl grid place-items-center text-white shadow-md mb-5" style="background:linear-gradient(135deg,#FF8A4C,#FF3D77)"><svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3h9l3 3v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M14 3v4h4M8 13h8M8 17h5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <button data-go="files" class="mode-card group text-left bg-surface border border-line rounded-3xl p-8 shadow-sm" style="--glow:rgba(255,61,119,.4)">
+          <div class="w-16 h-16 rounded-2xl grid place-items-center text-white shadow-md mb-5" style="background:linear-gradient(135deg,#3B82F6,#2563EB)"><svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3h9l3 3v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M14 3v4h4M8 13h8M8 17h5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <h2 class="font-display font-bold text-2xl tracking-tight">File Converter</h2>
           <p class="text-muted mt-2 leading-relaxed">Merge, split, convert, compress, sign, OCR &amp; more — 23 PDF &amp; image tools.</p>
           <span class="inline-flex items-center gap-1.5 mt-5 font-semibold text-brand">Open toolkit <svg class="w-5 h-5 arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </button>
-        <button data-go="units" class="mode-card group text-left bg-white border border-line rounded-3xl p-8 shadow-sm" style="--glow:rgba(124,92,255,.4)">
-          <div class="w-16 h-16 rounded-2xl grid place-items-center text-white shadow-md mb-5" style="background:linear-gradient(135deg,#7C5CFF,#22C7E0)"><svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 7l4-4 14 14-4 4zM7 7l2 2M11 3l2 2M15 7l2 2M7 11l2 2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <button data-go="units" class="mode-card group text-left bg-surface border border-line rounded-3xl p-8 shadow-sm" style="--glow:rgba(124,92,255,.4)">
+          <div class="w-16 h-16 rounded-2xl grid place-items-center text-white shadow-md mb-5" style="background:linear-gradient(135deg,#10B981,#059669)"><svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 7l4-4 14 14-4 4zM7 7l2 2M11 3l2 2M15 7l2 2M7 11l2 2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <h2 class="font-display font-bold text-2xl tracking-tight">Unit Converter</h2>
           <p class="text-muted mt-2 leading-relaxed">Length, weight, temperature, area, volume, speed, data, time &amp; live currency.</p>
-          <span class="inline-flex items-center gap-1.5 mt-5 font-semibold" style="color:#7C5CFF">Open converter <svg class="w-5 h-5 arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="inline-flex items-center gap-1.5 mt-5 font-semibold" style="color:#34D399">Open converter <svg class="w-5 h-5 arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </button>
       </div>
     </div>
@@ -127,18 +119,18 @@
     <div class="max-w-6xl mx-auto px-5 pt-16 pb-14 md:pt-24 md:pb-20 text-center">
       <div class="inline-flex flex-col items-center gap-3">
         <span class="grad-brand font-display font-bold text-white shadow-lg shadow-brand/30 text-base sm:text-lg tracking-[0.16em] uppercase px-6 py-2.5 rounded-full ring-1 ring-white/40">100% Free</span>
-        <span class="inline-flex flex-wrap justify-center items-center gap-x-2 gap-y-1 text-[11px] sm:text-xs font-semibold tracking-wide uppercase text-ink/70 bg-white/70 backdrop-blur px-3.5 py-1.5 rounded-full ring-1 ring-line">No Sign-up · Files Never Leave Your Device · Works Offline</span>
+        <span class="inline-flex flex-wrap justify-center items-center gap-x-2 gap-y-1 text-[11px] sm:text-xs font-semibold tracking-wide uppercase text-slate-300 bg-white/5 backdrop-blur px-3.5 py-1.5 rounded-full ring-1 ring-white/10">No Sign-up · Files Never Leave Your Device · Works Offline</span>
       </div>
       <h1 class="font-display font-bold tracking-tight leading-[0.95] mt-6 text-5xl sm:text-6xl md:text-7xl">All-in-One<br class="hidden sm:block" /> <span class="text-grad">PDF Tools</span></h1>
       <p class="mt-5 text-lg sm:text-xl text-muted max-w-2xl mx-auto leading-relaxed">Merge, split, convert, compress, sign and read documents — right in your browser. Fast, free, and nothing ever gets uploaded.</p>
       <div id="hero-search" class="mt-8 max-w-lg mx-auto relative">
         <svg class="w-5 h-5 text-muted absolute left-5 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3" stroke-linecap="round"/></svg>
-        <input id="search" type="search" placeholder="Search 20+ tools…" class="w-full rounded-2xl border border-line bg-white pl-12 pr-4 py-4 text-[15px] shadow-xl shadow-black/5 outline-none focus:border-brand focus:ring-4 focus:ring-brand/10 transition" />
+        <input id="search" type="search" placeholder="Search 20+ tools…" class="w-full rounded-2xl border border-line bg-surface pl-12 pr-4 py-4 text-[15px] shadow-xl shadow-black/5 outline-none focus:border-brand focus:ring-4 focus:ring-brand/10 transition" />
       </div>
       <div class="mt-7 flex flex-wrap items-center justify-center gap-2.5">
-        <span class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full ring-1" style="color:#B42318;background:#FEECEB;border-color:transparent;box-shadow:inset 0 0 0 1px #FBD5D1"><span class="w-2 h-2 rounded-full" style="background:#F2453D"></span> 20+ tools</span>
-        <span class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full" style="color:#5B21B6;background:#F1ECFE;box-shadow:inset 0 0 0 1px #E2D5FB"><span class="w-2 h-2 rounded-full" style="background:#8B5CF6"></span> No watermarks</span>
-        <span class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full" style="color:#065F63;background:#E6F7F5;box-shadow:inset 0 0 0 1px #C7ECE8"><span class="w-2 h-2 rounded-full" style="background:#14B8A6"></span> Works offline</span>
+        <span class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full text-blue-300" style="background:rgba(59,130,246,.12);box-shadow:inset 0 0 0 1px rgba(59,130,246,.35)"><span class="w-2 h-2 rounded-full" style="background:#3B82F6"></span> 20+ tools</span>
+        <span class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full text-emerald-300" style="background:rgba(16,185,129,.12);box-shadow:inset 0 0 0 1px rgba(16,185,129,.35)"><span class="w-2 h-2 rounded-full" style="background:#10B981"></span> No watermarks</span>
+        <span class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full text-cyan-300" style="background:rgba(6,182,212,.12);box-shadow:inset 0 0 0 1px rgba(6,182,212,.35)"><span class="w-2 h-2 rounded-full" style="background:#06B6D4"></span> Works offline</span>
       </div>
     </div>
   </section>
@@ -147,16 +139,16 @@
 
   <!-- Workspace -->
   <section id="workspace" class="max-w-3xl mx-auto px-5 pb-16 hidden">
-    <div class="bg-white border border-line rounded-3xl shadow-xl shadow-black/5 overflow-hidden">
+    <div class="bg-surface border border-line rounded-3xl shadow-xl shadow-black/5 overflow-hidden">
       <div class="flex items-center gap-3 px-5 sm:px-6 py-4 border-b border-line bg-paper/50">
         <div id="wsIcon" class="w-11 h-11 rounded-2xl grid place-items-center shrink-0 text-white shadow-md"></div>
         <div class="min-w-0"><h3 id="wsTitle" class="font-display font-semibold text-lg leading-tight truncate"></h3><p id="wsDesc" class="text-sm text-muted truncate"></p></div>
         <button id="wsClose" class="ml-auto text-muted hover:text-ink text-sm px-3 py-1.5 rounded-lg hover:bg-line/60 transition">Close</button>
       </div>
       <div class="p-5 sm:p-6 space-y-5">
-        <div id="dropzone" class="dropzone relative cursor-pointer rounded-xl border-2 border-dashed border-line bg-paper/60 px-6 py-9 text-center transition" tabindex="0" role="button" aria-label="Add files by clicking or dragging them here">
+        <div id="dropzone" class="dropzone relative cursor-pointer rounded-xl border-2 border-dashed px-6 py-9 text-center transition" tabindex="0" role="button" aria-label="Add files by clicking or dragging them here">
           <input id="fileInput" type="file" class="hidden" />
-          <div class="mx-auto w-12 h-12 rounded-xl bg-white border border-line grid place-items-center mb-3 shadow-sm"><svg class="w-6 h-6 text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 16V4m0 0L8 8m4-4 4 4" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke-linecap="round"/></svg></div>
+          <div class="mx-auto w-12 h-12 rounded-xl bg-surface border border-line grid place-items-center mb-3 shadow-sm"><svg class="w-6 h-6 text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 16V4m0 0L8 8m4-4 4 4" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke-linecap="round"/></svg></div>
           <p class="font-medium">Drop files here, or <span class="text-brand">browse</span></p>
           <p id="dzHint" class="text-sm text-muted mt-1"></p>
         </div>
@@ -174,14 +166,14 @@
 
   <!-- How it works -->
   <section id="how" class="relative border-t border-line overflow-hidden">
-    <div class="absolute inset-0 -z-10" style="background:radial-gradient(50% 60% at 50% 0%, rgba(162,75,255,.08), transparent 70%), #F7F8FA"></div>
+    <div class="absolute inset-0 -z-10" style="background:radial-gradient(60% 60% at 50% 0%, rgba(59,130,246,.10), transparent 70%), #0F172A"></div>
     <div class="max-w-6xl mx-auto px-5 py-16">
       <h2 class="font-display font-bold text-3xl tracking-tight text-center">How it works &amp; <span class="text-grad">is it safe?</span></h2>
       <p class="text-muted text-center max-w-2xl mx-auto mt-3 text-lg">Every tool runs entirely inside your own browser. Your documents are never uploaded — which is exactly why it's private, free, and works offline once loaded.</p>
       <div class="grid md:grid-cols-3 gap-5 mt-10">
-        <div class="bg-white border border-line rounded-2xl p-6 shadow-sm"><div class="w-12 h-12 rounded-2xl text-white grid place-items-center mb-4 shadow-md" style="background:linear-gradient(135deg,#FF8A4C,#FF3D77)"><svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3 4 6v6c0 5 3.5 7.5 8 9 4.5-1.5 8-4 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3 class="font-display font-semibold text-lg">Private by design</h3><p class="text-sm text-muted mt-2 leading-relaxed">Files are read and processed on your device. Nothing is sent anywhere, so nobody — including us — can see them.</p></div>
-        <div class="bg-white border border-line rounded-2xl p-6 shadow-sm"><div class="w-12 h-12 rounded-2xl text-white grid place-items-center mb-4 shadow-md" style="background:linear-gradient(135deg,#8B5CF6,#EC4899)"><svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z" stroke-linejoin="round"/></svg></div><h3 class="font-display font-semibold text-lg">No sign-up, no limits</h3><p class="text-sm text-muted mt-2 leading-relaxed">No account, no email, no watermarks on your output. Open the page and start — as many files as you like.</p></div>
-        <div class="bg-white border border-line rounded-2xl p-6 shadow-sm"><div class="w-12 h-12 rounded-2xl text-white grid place-items-center mb-4 shadow-md" style="background:linear-gradient(135deg,#3B82F6,#22C7E0)"><svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12a7 7 0 0 1 12-5m2-2v4h-4M19 12a7 7 0 0 1-12 5m-2 2v-4h4" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3 class="font-display font-semibold text-lg">Works offline</h3><p class="text-sm text-muted mt-2 leading-relaxed">After the page loads once, the tools keep working with no internet connection. Your data stays with you.</p></div>
+        <div class="bg-surface border border-line rounded-2xl p-6 shadow-sm"><div class="w-12 h-12 rounded-2xl text-white grid place-items-center mb-4 shadow-md" style="background:linear-gradient(135deg,#3B82F6,#2563EB)"><svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3 4 6v6c0 5 3.5 7.5 8 9 4.5-1.5 8-4 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3 class="font-display font-semibold text-lg">Private by design</h3><p class="text-sm text-muted mt-2 leading-relaxed">Files are read and processed on your device. Nothing is sent anywhere, so nobody — including us — can see them.</p></div>
+        <div class="bg-surface border border-line rounded-2xl p-6 shadow-sm"><div class="w-12 h-12 rounded-2xl text-white grid place-items-center mb-4 shadow-md" style="background:linear-gradient(135deg,#10B981,#059669)"><svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z" stroke-linejoin="round"/></svg></div><h3 class="font-display font-semibold text-lg">No sign-up, no limits</h3><p class="text-sm text-muted mt-2 leading-relaxed">No account, no email, no watermarks on your output. Open the page and start — as many files as you like.</p></div>
+        <div class="bg-surface border border-line rounded-2xl p-6 shadow-sm"><div class="w-12 h-12 rounded-2xl text-white grid place-items-center mb-4 shadow-md" style="background:linear-gradient(135deg,#06B6D4,#3B82F6)"><svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12a7 7 0 0 1 12-5m2-2v4h-4M19 12a7 7 0 0 1-12 5m-2 2v-4h4" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3 class="font-display font-semibold text-lg">Works offline</h3><p class="text-sm text-muted mt-2 leading-relaxed">After the page loads once, the tools keep working with no internet connection. Your data stays with you.</p></div>
       </div>
       <p class="text-xs text-muted text-center mt-8 max-w-2xl mx-auto">Note: the tools in the “Needs a server” section are the only ones that would require uploading — they aren't available here, precisely to keep this promise.</p>
     </div>
@@ -199,18 +191,18 @@
     </section>
     <main class="max-w-4xl mx-auto px-5 py-8">
       <div id="uc-cats" class="flex flex-wrap gap-2 justify-center mb-8"></div>
-      <div class="bg-white border border-line rounded-3xl shadow-xl shadow-black/5 p-6 sm:p-8">
+      <div class="bg-surface border border-line rounded-3xl shadow-xl shadow-black/5 p-6 sm:p-8">
         <div class="grid sm:grid-cols-[1fr_auto_1fr] gap-4 items-end">
           <div>
             <label class="text-sm font-medium text-muted">From</label>
-            <input id="uc-in" type="number" inputmode="decimal" value="1" class="mt-1 w-full rounded-xl border border-line px-4 py-3 text-lg bg-white outline-none focus:border-brand focus:ring-4 focus:ring-brand/10" />
-            <select id="uc-from" class="mt-2 w-full rounded-xl border border-line px-4 py-3 bg-white outline-none focus:border-brand"></select>
+            <input id="uc-in" type="number" inputmode="decimal" value="1" class="mt-1 w-full rounded-xl border border-line px-4 py-3 text-lg bg-surface outline-none focus:border-brand focus:ring-4 focus:ring-brand/10" />
+            <select id="uc-from" class="mt-2 w-full rounded-xl border border-line px-4 py-3 bg-surface outline-none focus:border-brand"></select>
           </div>
           <button id="uc-swap" class="mb-2 mx-auto w-11 h-11 rounded-xl border border-line grid place-items-center text-muted hover:text-ink hover:border-muted/40 transition" aria-label="Swap units"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 4v13m0 0-3-3m3 3 3-3M17 20V7m0 0-3 3m3-3 3 3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
           <div>
             <label class="text-sm font-medium text-muted">To</label>
             <input id="uc-out" type="text" readonly class="mt-1 w-full rounded-xl border border-line px-4 py-3 text-lg bg-paper/60 outline-none font-semibold" />
-            <select id="uc-to" class="mt-2 w-full rounded-xl border border-line px-4 py-3 bg-white outline-none focus:border-brand"></select>
+            <select id="uc-to" class="mt-2 w-full rounded-xl border border-line px-4 py-3 bg-surface outline-none focus:border-brand"></select>
           </div>
         </div>
         <p id="uc-note" class="text-center text-sm text-muted mt-5"></p>
@@ -218,14 +210,14 @@
     </main>
   </div><!-- /view-units -->
 
-  <footer class="border-t border-line bg-white">
+  <footer class="border-t border-line bg-surface">
     <div class="max-w-6xl mx-auto px-5 py-10">
       <div class="rounded-3xl grad-brand px-6 sm:px-10 py-8 text-white flex flex-col sm:flex-row items-center justify-between gap-5 shadow-xl shadow-brand/20">
         <div class="text-center sm:text-left">
           <p class="font-display font-bold text-xl uppercase">My Convert Box</p>
           <p class="text-white/85 text-sm mt-1">20+ PDF tools, 100% free — right in your browser.</p>
         </div>
-        <a href="#tools" class="shrink-0 bg-white text-ink font-semibold px-6 py-3 rounded-xl shadow-sm hover:bg-white/90 transition">Explore tools</a>
+        <a href="#tools" class="shrink-0 bg-surface text-slate-900 font-semibold px-6 py-3 rounded-xl shadow-sm hover:bg-white/90 transition">Explore tools</a>
       </div>
       <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-muted">
         <span class="font-display font-bold tracking-tight text-lg uppercase">My <span class="text-grad">Convert</span> Box</span>
@@ -327,7 +319,7 @@ Object.entries(TOOLS).forEach(([key,t])=>{ const grid=root.querySelector(`[data-
   const c=document.createElement("button");
   c.className="tool-card group relative text-center rounded-2xl p-5 border";
   c.dataset.name=t.title.toLowerCase();
-  c.style.background=pastel; c.style.borderColor=hexA(ac,.22); c.style.setProperty("--glow",hexA(ac,.4));
+  c.style.background="#1E293B"; c.style.borderColor="rgba(255,255,255,0.08)"; c.style.setProperty("--glow",hexA(ac,.45));
   c.innerHTML=`<div class="relative w-14 h-14 mx-auto mb-3">
       <svg viewBox="0 0 40 40" class="w-full h-full drop-shadow-sm"><rect x="6" y="2.5" width="23" height="33" rx="3.5" fill="#fff" stroke="${ac}" stroke-width="1.6"/><path d="M23 2.5v6a1.5 1.5 0 0 0 1.5 1.5H29" fill="none" stroke="${ac}" stroke-width="1.6" stroke-linejoin="round"/><line x1="11" y1="16" x2="22" y2="16" stroke="${hexA(ac,.45)}" stroke-width="1.8" stroke-linecap="round"/><line x1="11" y1="21" x2="24" y2="21" stroke="${hexA(ac,.45)}" stroke-width="1.8" stroke-linecap="round"/><line x1="11" y1="26" x2="19" y2="26" stroke="${hexA(ac,.45)}" stroke-width="1.8" stroke-linecap="round"/></svg>
       <span class="tile-badge absolute -bottom-1 -right-1 w-8 h-8 rounded-xl grid place-items-center text-white shadow-md" style="background:${ac}">${t.icon}</span>
@@ -363,7 +355,7 @@ function selectTool(key){ currentTool=key; const t=TOOLS[key];
   const g=CATG[t.cat]||["#FF6A3D","#A24BFF"];
   const wsIcon=document.getElementById("wsIcon"); wsIcon.innerHTML=t.icon; wsIcon.style.background=gradCss(t.cat); wsIcon.style.color="#fff";
   document.getElementById("dzHint").textContent=t.hint; dropzone.style.setProperty("--accent",g[1]);
-  actionBtn.style.backgroundImage=gradCss(t.cat);
+  actionBtn.style.backgroundImage="linear-gradient(120deg,#3B82F6,#2563EB)";
   fileInput.multiple=t.multiple; fileInput.accept=t.ext;
   workspace.classList.remove("hidden"); renderPreviews(); renderOptions();
   workspace.scrollIntoView({behavior:"smooth",block:"start"}); }
@@ -391,7 +383,7 @@ function fmtSize(b){ if(b<1024)return b+" B"; if(b<1048576)return (b/1024).toFix
 
 function renderPreviews(){ const t=TOOLS[currentTool]; previewsEl.innerHTML="";
   files.forEach((f,idx)=>{ const row=document.createElement("div");
-    row.className="flex items-center gap-3 bg-white border border-line rounded-xl p-2.5 reveal";
+    row.className="flex items-center gap-3 bg-surface border border-line rounded-xl p-2.5 reveal";
     let thumb; if(f.file.type.startsWith("image/")) thumb=`<img src="${URL.createObjectURL(f.file)}" class="w-11 h-11 rounded-lg object-cover border border-line shrink-0" alt=""/>`;
     else thumb=`<div class="w-11 h-11 rounded-lg bg-brand/10 text-brand grid place-items-center shrink-0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><path d="M6 3h9l3 3v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M14 3v4h4" stroke-linejoin="round"/></svg></div>`;
     let order=""; if(t.multiple&&files.length>1) order=`<div class="flex flex-col mr-1"><button data-move="up" class="text-muted hover:text-ink disabled:opacity-25 p-0.5" ${idx===0?"disabled":""} aria-label="Move up"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 15 6-6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button data-move="down" class="text-muted hover:text-ink disabled:opacity-25 p-0.5" ${idx===files.length-1?"disabled":""} aria-label="Move down"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>`;
@@ -414,27 +406,27 @@ function renderOptions(){ optionsEl.innerHTML=""; const t=currentTool;
   if(t==="sign"){ optionsEl.innerHTML=signPadHTML(); wireSignPad(); if(files.length) optionsEl.insertAdjacentHTML("beforeend",signPlaceHTML()), wireSignSize(); return; }
   if(!files.length) return;
   if(t==="split"){ optionsEl.innerHTML=panel(`<p class="text-sm font-medium">How should we split it?</p>
-    <label class="flex items-start gap-3 cursor-pointer"><input type="radio" name="sm" value="extract" class="mt-1 accent-brand" checked><span class="text-sm"><span class="font-medium text-ink">Extract pages</span><span class="block text-muted">Pull specific pages into one new PDF.</span><input id="rangeInput" type="text" placeholder="e.g. 1-3, 5, 8-10" class="mt-2 w-full sm:w-64 rounded-lg border border-line px-3 py-2 text-sm bg-white focus:border-brand outline-none"></span></label>
+    <label class="flex items-start gap-3 cursor-pointer"><input type="radio" name="sm" value="extract" class="mt-1 accent-brand" checked><span class="text-sm"><span class="font-medium text-ink">Extract pages</span><span class="block text-muted">Pull specific pages into one new PDF.</span><input id="rangeInput" type="text" placeholder="e.g. 1-3, 5, 8-10" class="mt-2 w-full sm:w-64 rounded-lg border border-line px-3 py-2 text-sm bg-surface focus:border-brand outline-none"></span></label>
     <label class="flex items-start gap-3 cursor-pointer"><input type="radio" name="sm" value="all" class="mt-1 accent-brand"><span class="text-sm"><span class="font-medium text-ink">Split every page</span><span class="block text-muted">One PDF per page, delivered as a ZIP.</span></span></label>`); }
   else if(t==="rotate"){ optionsEl.innerHTML=panel(`<p class="text-sm font-medium">Rotate all pages by</p><div class="flex gap-2" id="rc">${[90,180,270].map((d,i)=>`<button data-deg="${d}" class="flex-1 rounded-lg border px-3 py-2 text-sm font-medium ${i===0?'border-brand text-brand bg-brand/5':'border-line'}">${d}°</button>`).join("")}</div>`);
     optionsEl.dataset.deg=90; optionsEl.querySelectorAll("#rc button").forEach(b=>b.addEventListener("click",()=>{optionsEl.querySelectorAll("#rc button").forEach(x=>x.className="flex-1 rounded-lg border px-3 py-2 text-sm font-medium border-line");b.className="flex-1 rounded-lg border px-3 py-2 text-sm font-medium border-brand text-brand bg-brand/5";optionsEl.dataset.deg=b.dataset.deg;})); }
-  else if(t==="del"){ optionsEl.innerHTML=panel(`<p class="text-sm font-medium">Pages to delete</p><input id="delInput" type="text" placeholder="e.g. 2, 5-7" class="w-full sm:w-64 rounded-lg border border-line px-3 py-2 text-sm bg-white focus:border-brand outline-none"><p class="text-xs text-muted">Everything else is kept.</p>`); }
+  else if(t==="del"){ optionsEl.innerHTML=panel(`<p class="text-sm font-medium">Pages to delete</p><input id="delInput" type="text" placeholder="e.g. 2, 5-7" class="w-full sm:w-64 rounded-lg border border-line px-3 py-2 text-sm bg-surface focus:border-brand outline-none"><p class="text-xs text-muted">Everything else is kept.</p>`); }
   else if(t==="crop"){ buildCrop(); }
-  else if(t==="imgconv"){ optionsEl.innerHTML=panel(`<div class="grid sm:grid-cols-2 gap-3"><label class="text-sm">Convert to<select id="icFmt" class="mt-1 w-full rounded-lg border border-line px-3 py-2 text-sm bg-white focus:border-brand outline-none"><option value="image/png">PNG</option><option value="image/jpeg">JPG</option><option value="image/webp">WebP</option></select></label><label class="text-sm">Quality <span id="icqv" class="text-muted">90%</span><input id="icq" type="range" min="50" max="100" value="90" class="mt-1 w-full accent-brand"></label></div><p class="text-xs text-muted">Quality applies to JPG and WebP only.</p>`);
+  else if(t==="imgconv"){ optionsEl.innerHTML=panel(`<div class="grid sm:grid-cols-2 gap-3"><label class="text-sm">Convert to<select id="icFmt" class="mt-1 w-full rounded-lg border border-line px-3 py-2 text-sm bg-surface focus:border-brand outline-none"><option value="image/png">PNG</option><option value="image/jpeg">JPG</option><option value="image/webp">WebP</option></select></label><label class="text-sm">Quality <span id="icqv" class="text-muted">90%</span><input id="icq" type="range" min="50" max="100" value="90" class="mt-1 w-full accent-brand"></label></div><p class="text-xs text-muted">Quality applies to JPG and WebP only.</p>`);
     optionsEl.querySelector("#icq").addEventListener("input",e=>optionsEl.querySelector("#icqv").textContent=e.target.value+"%"); }
-  else if(t==="imgcompress"){ optionsEl.innerHTML=panel(`<div class="grid sm:grid-cols-2 gap-3"><label class="text-sm">Output<select id="cmpFmt" class="mt-1 w-full rounded-lg border border-line px-3 py-2 text-sm bg-white focus:border-brand outline-none"><option value="image/jpeg">JPG (smallest)</option><option value="image/webp">WebP</option></select></label><label class="text-sm">Quality <span id="cmpqv" class="text-muted">65%</span><input id="cmpq" type="range" min="30" max="90" value="65" class="mt-1 w-full accent-brand"></label></div><label class="text-sm block">Max width (px, optional)<input id="cmpw" type="number" placeholder="e.g. 1600" class="mt-1 w-full sm:w-40 rounded-lg border border-line px-3 py-2 text-sm bg-white focus:border-brand outline-none"></label>`);
+  else if(t==="imgcompress"){ optionsEl.innerHTML=panel(`<div class="grid sm:grid-cols-2 gap-3"><label class="text-sm">Output<select id="cmpFmt" class="mt-1 w-full rounded-lg border border-line px-3 py-2 text-sm bg-surface focus:border-brand outline-none"><option value="image/jpeg">JPG (smallest)</option><option value="image/webp">WebP</option></select></label><label class="text-sm">Quality <span id="cmpqv" class="text-muted">65%</span><input id="cmpq" type="range" min="30" max="90" value="65" class="mt-1 w-full accent-brand"></label></div><label class="text-sm block">Max width (px, optional)<input id="cmpw" type="number" placeholder="e.g. 1600" class="mt-1 w-full sm:w-40 rounded-lg border border-line px-3 py-2 text-sm bg-surface focus:border-brand outline-none"></label>`);
     optionsEl.querySelector("#cmpq").addEventListener("input",e=>optionsEl.querySelector("#cmpqv").textContent=e.target.value+"%"); }
   else if(t==="ocr"){ optionsEl.innerHTML=panel(`<p class="text-sm text-muted leading-relaxed">On first run this downloads an English language pack (~a few MB) from the Tesseract CDN, then reads the text on your device. Larger scans take a little while.</p>`); }
-  else if(t==="number"){ optionsEl.innerHTML=panel(`<div class="grid sm:grid-cols-2 gap-3"><label class="text-sm">Position<select id="numPos" class="mt-1 w-full rounded-lg border border-line px-3 py-2 text-sm bg-white focus:border-brand outline-none"><option value="bc">Bottom center</option><option value="br">Bottom right</option><option value="bl">Bottom left</option><option value="tc">Top center</option></select></label><label class="text-sm">Format<select id="numFmt" class="mt-1 w-full rounded-lg border border-line px-3 py-2 text-sm bg-white focus:border-brand outline-none"><option value="n">1, 2, 3…</option><option value="nt">1 / N</option><option value="pn">Page 1</option></select></label></div>`); }
-  else if(t==="mark"){ optionsEl.innerHTML=panel(`<label class="text-sm block">Watermark text<input id="wmText" type="text" value="CONFIDENTIAL" class="mt-1 w-full rounded-lg border border-line px-3 py-2 text-sm bg-white focus:border-brand outline-none"></label><div class="grid sm:grid-cols-2 gap-3"><label class="text-sm">Opacity <span id="wmOpVal" class="text-muted">15%</span><input id="wmOp" type="range" min="5" max="60" value="15" class="mt-1 w-full accent-brand"></label><label class="text-sm">Layout<select id="wmLayout" class="mt-1 w-full rounded-lg border border-line px-3 py-2 text-sm bg-white focus:border-brand outline-none"><option value="diag">Diagonal</option><option value="center">Centered</option></select></label></div>`);
+  else if(t==="number"){ optionsEl.innerHTML=panel(`<div class="grid sm:grid-cols-2 gap-3"><label class="text-sm">Position<select id="numPos" class="mt-1 w-full rounded-lg border border-line px-3 py-2 text-sm bg-surface focus:border-brand outline-none"><option value="bc">Bottom center</option><option value="br">Bottom right</option><option value="bl">Bottom left</option><option value="tc">Top center</option></select></label><label class="text-sm">Format<select id="numFmt" class="mt-1 w-full rounded-lg border border-line px-3 py-2 text-sm bg-surface focus:border-brand outline-none"><option value="n">1, 2, 3…</option><option value="nt">1 / N</option><option value="pn">Page 1</option></select></label></div>`); }
+  else if(t==="mark"){ optionsEl.innerHTML=panel(`<label class="text-sm block">Watermark text<input id="wmText" type="text" value="CONFIDENTIAL" class="mt-1 w-full rounded-lg border border-line px-3 py-2 text-sm bg-surface focus:border-brand outline-none"></label><div class="grid sm:grid-cols-2 gap-3"><label class="text-sm">Opacity <span id="wmOpVal" class="text-muted">15%</span><input id="wmOp" type="range" min="5" max="60" value="15" class="mt-1 w-full accent-brand"></label><label class="text-sm">Layout<select id="wmLayout" class="mt-1 w-full rounded-lg border border-line px-3 py-2 text-sm bg-surface focus:border-brand outline-none"><option value="diag">Diagonal</option><option value="center">Centered</option></select></label></div>`);
     optionsEl.querySelector("#wmOp").addEventListener("input",e=>optionsEl.querySelector("#wmOpVal").textContent=e.target.value+"%"); }
   else if(t==="addtext"){ buildAddText(); }
   else if(t==="form"){ buildForm(); }
   else if(t==="compress"){ optionsEl.innerHTML=panel(`<label class="text-sm block">Quality <span id="cqVal" class="text-muted">Medium</span><input id="cq" type="range" min="1" max="3" value="2" step="1" class="mt-1 w-full accent-brand"></label><p class="text-xs text-muted leading-relaxed">Pages are re-rendered as images, so text becomes non-selectable. Best for scanned or image-heavy PDFs — plain text PDFs may not shrink.</p>`);
     const l={1:"Small file",2:"Medium",3:"High quality"}; optionsEl.querySelector("#cq").addEventListener("input",e=>optionsEl.querySelector("#cqVal").textContent=l[e.target.value]); }
   else if(t==="meta"){ buildMeta(); }
-  else if(t==="pdf2png"){ optionsEl.innerHTML=panel(`<label class="text-sm block">Resolution<select id="pngScale" class="mt-1 w-full sm:w-56 rounded-lg border border-line px-3 py-2 text-sm bg-white focus:border-brand outline-none"><option value="1.5">Standard (1.5×)</option><option value="2" selected>High (2×)</option><option value="3">Very high (3×)</option></select></label><p class="text-xs text-muted">Higher resolution = sharper images but larger files.</p>`); }
-  else if(t==="unlock"){ optionsEl.innerHTML=panel(`<label class="text-sm block">PDF password<input id="ulPass" type="password" placeholder="Enter the password you know" class="mt-1 w-full sm:w-64 rounded-lg border border-line px-3 py-2 text-sm bg-white focus:border-brand outline-none"></label><p class="text-xs text-muted leading-relaxed">Only works if you already know the password. The unlocked copy is rebuilt as page images, so its text becomes non-selectable.</p>`); }
+  else if(t==="pdf2png"){ optionsEl.innerHTML=panel(`<label class="text-sm block">Resolution<select id="pngScale" class="mt-1 w-full sm:w-56 rounded-lg border border-line px-3 py-2 text-sm bg-surface focus:border-brand outline-none"><option value="1.5">Standard (1.5×)</option><option value="2" selected>High (2×)</option><option value="3">Very high (3×)</option></select></label><p class="text-xs text-muted">Higher resolution = sharper images but larger files.</p>`); }
+  else if(t==="unlock"){ optionsEl.innerHTML=panel(`<label class="text-sm block">PDF password<input id="ulPass" type="password" placeholder="Enter the password you know" class="mt-1 w-full sm:w-64 rounded-lg border border-line px-3 py-2 text-sm bg-surface focus:border-brand outline-none"></label><p class="text-xs text-muted leading-relaxed">Only works if you already know the password. The unlocked copy is rebuilt as page images, so its text becomes non-selectable.</p>`); }
   updateAction(); }
 
 function updateAction(){ const t=TOOLS[currentTool]; const has=files.length>0; let ok=has;
@@ -444,8 +436,8 @@ function updateAction(){ const t=TOOLS[currentTool]; const has=files.length>0; l
   actionBtn.disabled=!ok; actionLabel.textContent=has?t.ready:t.idle; }
 
 /* signature */
-function signPadHTML(){ return panel(`<p class="text-sm font-medium">Draw your signature</p><div class="rounded-lg border border-line bg-white"><canvas id="sigPad" width="600" height="180" class="w-full rounded-lg" style="height:150px"></canvas></div><button id="sigClear" class="text-sm text-muted hover:text-ink">Clear</button>`); }
-function signPlaceHTML(){ return panel(`<div class="grid sm:grid-cols-3 gap-3"><label class="text-sm">Page<input id="sigPage" type="number" min="1" value="1" class="mt-1 w-full rounded-lg border border-line px-3 py-2 text-sm bg-white focus:border-brand outline-none"></label><label class="text-sm">Position<select id="sigPos" class="mt-1 w-full rounded-lg border border-line px-3 py-2 text-sm bg-white focus:border-brand outline-none"><option value="br">Bottom right</option><option value="bl">Bottom left</option><option value="tr">Top right</option><option value="tl">Top left</option><option value="c">Center</option></select></label><label class="text-sm">Size <span id="sigSzVal" class="text-muted">Medium</span><input id="sigSz" type="range" min="1" max="3" value="2" step="1" class="mt-1 w-full accent-brand"></label></div>`); }
+function signPadHTML(){ return panel(`<p class="text-sm font-medium">Draw your signature</p><div class="rounded-lg border border-line bg-surface"><canvas id="sigPad" width="600" height="180" class="w-full rounded-lg" style="height:150px"></canvas></div><button id="sigClear" class="text-sm text-muted hover:text-ink">Clear</button>`); }
+function signPlaceHTML(){ return panel(`<div class="grid sm:grid-cols-3 gap-3"><label class="text-sm">Page<input id="sigPage" type="number" min="1" value="1" class="mt-1 w-full rounded-lg border border-line px-3 py-2 text-sm bg-surface focus:border-brand outline-none"></label><label class="text-sm">Position<select id="sigPos" class="mt-1 w-full rounded-lg border border-line px-3 py-2 text-sm bg-surface focus:border-brand outline-none"><option value="br">Bottom right</option><option value="bl">Bottom left</option><option value="tr">Top right</option><option value="tl">Top left</option><option value="c">Center</option></select></label><label class="text-sm">Size <span id="sigSzVal" class="text-muted">Medium</span><input id="sigSz" type="range" min="1" max="3" value="2" step="1" class="mt-1 w-full accent-brand"></label></div>`); }
 function wireSignSize(){ const sl={1:"Small",2:"Medium",3:"Large"}; optionsEl.querySelector("#sigSz")?.addEventListener("input",e=>optionsEl.querySelector("#sigSzVal").textContent=sl[e.target.value]); }
 function wireSignPad(){ const c=optionsEl.querySelector("#sigPad"); if(!c)return; const ctx=c.getContext("2d"); ctx.lineWidth=2.5; ctx.lineCap="round"; ctx.strokeStyle="#17140F";
   let drawing=false,last=null,dirty=false;
@@ -465,7 +457,7 @@ async function buildOrganize(){ const area=document.getElementById("orgArea"); c
   const grid=area.querySelector("#orgGrid"); const thumbs=[];
   for(let i=1;i<=pdf.numPages;i++){ const page=await pdf.getPage(i); const vp=page.getViewport({scale:0.35}); const cv=document.createElement("canvas"); cv.width=vp.width; cv.height=vp.height; await page.render({canvasContext:cv.getContext("2d"),viewport:vp}).promise; thumbs[i-1]=cv.toDataURL(); }
   function draw(){ grid.innerHTML=""; organizeModel.forEach((p,idx)=>{ const cell=document.createElement("div");
-    cell.className="page-thumb relative bg-white border border-line rounded-lg overflow-hidden "+(p.del?"opacity-40":"");
+    cell.className="page-thumb relative bg-surface border border-line rounded-lg overflow-hidden "+(p.del?"opacity-40":"");
     cell.innerHTML=`<img src="${thumbs[p.orig]}" class="w-full block" style="transform:rotate(${p.rot}deg)" alt="page ${p.orig+1}"><span class="absolute top-1 left-1 text-[10px] bg-black/60 text-white rounded px-1.5 py-0.5">${idx+1}</span><div class="absolute inset-x-0 bottom-0 flex justify-center gap-1 p-1 bg-gradient-to-t from-black/50 to-transparent"><button data-a="left" ${idx===0?"disabled":""} class="text-white/90 disabled:opacity-30 p-1"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 6-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button data-a="rot" class="text-white/90 p-1"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 1 1-3-6.7" stroke-linecap="round"/><path d="M21 4v5h-5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button data-a="del" class="text-white/90 p-1"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">${p.del?'<path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/>':'<path d="M18 6 6 18M6 6l12 12" stroke-linecap="round"/>'}</svg></button><button data-a="right" ${idx===organizeModel.length-1?"disabled":""} class="text-white/90 disabled:opacity-30 p-1"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>`;
     cell.querySelector('[data-a="left"]').addEventListener("click",()=>{[organizeModel[idx-1],organizeModel[idx]]=[organizeModel[idx],organizeModel[idx-1]];draw();});
     cell.querySelector('[data-a="right"]').addEventListener("click",()=>{[organizeModel[idx+1],organizeModel[idx]]=[organizeModel[idx],organizeModel[idx+1]];draw();});
@@ -493,11 +485,11 @@ async function buildCrop(){ optionsEl.innerHTML=`<div id="cropArea" class="round
 /* add text */
 async function buildAddText(){ optionsEl.innerHTML=`<div id="atArea" class="rounded-xl bg-paper/70 border border-line p-4"><p class="text-sm text-muted">Rendering preview…</p></div>`;
   const area=document.getElementById("atArea"); let pageIdx=0; const info=await renderPageCanvas(files[0].file,0,1); const N=info.numPages;
-  area.innerHTML=`<label class="text-sm block mb-2">Text<input id="atText" type="text" value="" placeholder="Type text to place…" class="mt-1 w-full rounded-lg border border-line px-3 py-2 text-sm bg-white focus:border-brand outline-none"></label>
+  area.innerHTML=`<label class="text-sm block mb-2">Text<input id="atText" type="text" value="" placeholder="Type text to place…" class="mt-1 w-full rounded-lg border border-line px-3 py-2 text-sm bg-surface focus:border-brand outline-none"></label>
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-3 text-sm">
-      <label>Page<input id="atPage" type="number" min="1" max="${N}" value="1" class="mt-1 w-full rounded-lg border border-line px-2 py-2 bg-white focus:border-brand outline-none"></label>
+      <label>Page<input id="atPage" type="number" min="1" max="${N}" value="1" class="mt-1 w-full rounded-lg border border-line px-2 py-2 bg-surface focus:border-brand outline-none"></label>
       <label>Size <span id="atSzV" class="text-muted">18</span><input id="atSz" type="range" min="8" max="48" value="18" class="mt-1 w-full accent-brand"></label>
-      <label>Color<input id="atColor" type="color" value="#17140F" class="mt-1 w-full h-9 rounded-lg border border-line bg-white"></label>
+      <label>Color<input id="atColor" type="color" value="#17140F" class="mt-1 w-full h-9 rounded-lg border border-line bg-surface"></label>
       <div class="flex items-end text-xs text-muted">Click the page to place</div>
     </div>
     <div class="flex justify-center"><canvas id="atCanvas" class="placeCanvas rounded border border-line cursor-crosshair max-w-full"></canvas></div>`;
@@ -518,9 +510,9 @@ async function buildForm(){ optionsEl.innerHTML=`<div id="fmArea" class="rounded
   formFields=[]; let html=`<p class="text-sm font-medium mb-3">${fields.length} field${fields.length>1?"s":""} found</p><div class="space-y-3">`;
   fields.forEach((f,i)=>{ const name=f.getName(); const type=f.constructor.name; const id="fld"+i; formFields.push({name,type});
     if(type==="PDFCheckBox") html+=`<label class="flex items-center gap-2 text-sm"><input id="${id}" type="checkbox" class="accent-brand w-4 h-4"> ${esc(name)}</label>`;
-    else if(type==="PDFDropdown"){ let opts=[]; try{opts=f.getOptions();}catch{} html+=`<label class="text-sm block">${esc(name)}<select id="${id}" class="mt-1 w-full rounded-lg border border-line px-3 py-2 bg-white focus:border-brand outline-none"><option value=""></option>${opts.map(o=>`<option>${esc(o)}</option>`).join("")}</select></label>`; }
-    else if(type==="PDFRadioGroup"){ let opts=[]; try{opts=f.getOptions();}catch{} html+=`<label class="text-sm block">${esc(name)}<select id="${id}" class="mt-1 w-full rounded-lg border border-line px-3 py-2 bg-white focus:border-brand outline-none"><option value=""></option>${opts.map(o=>`<option>${esc(o)}</option>`).join("")}</select></label>`; }
-    else html+=`<label class="text-sm block">${esc(name)}<input id="${id}" type="text" class="mt-1 w-full rounded-lg border border-line px-3 py-2 bg-white focus:border-brand outline-none"></label>`; });
+    else if(type==="PDFDropdown"){ let opts=[]; try{opts=f.getOptions();}catch{} html+=`<label class="text-sm block">${esc(name)}<select id="${id}" class="mt-1 w-full rounded-lg border border-line px-3 py-2 bg-surface focus:border-brand outline-none"><option value=""></option>${opts.map(o=>`<option>${esc(o)}</option>`).join("")}</select></label>`; }
+    else if(type==="PDFRadioGroup"){ let opts=[]; try{opts=f.getOptions();}catch{} html+=`<label class="text-sm block">${esc(name)}<select id="${id}" class="mt-1 w-full rounded-lg border border-line px-3 py-2 bg-surface focus:border-brand outline-none"><option value=""></option>${opts.map(o=>`<option>${esc(o)}</option>`).join("")}</select></label>`; }
+    else html+=`<label class="text-sm block">${esc(name)}<input id="${id}" type="text" class="mt-1 w-full rounded-lg border border-line px-3 py-2 bg-surface focus:border-brand outline-none"></label>`; });
   html+=`</div><label class="flex items-center gap-2 text-sm mt-3"><input id="fmFlatten" type="checkbox" class="accent-brand w-4 h-4" checked> Flatten (lock fields so they can't be edited)</label>`;
   area.innerHTML=html; updateAction(); }
 
@@ -530,10 +522,10 @@ async function buildMeta(){ optionsEl.innerHTML=`<div id="mtArea" class="rounded
   const g=(fn)=>{try{return fn()||"";}catch{return"";}};
   const cur={title:g(()=>doc.getTitle()),author:g(()=>doc.getAuthor()),subject:g(()=>doc.getSubject()),keywords:g(()=>doc.getKeywords())};
   area.innerHTML=`<div class="space-y-3">
-    <label class="text-sm block">Title<input id="mtTitle" type="text" value="${esc(cur.title)}" class="mt-1 w-full rounded-lg border border-line px-3 py-2 bg-white focus:border-brand outline-none"></label>
-    <label class="text-sm block">Author<input id="mtAuthor" type="text" value="${esc(cur.author)}" class="mt-1 w-full rounded-lg border border-line px-3 py-2 bg-white focus:border-brand outline-none"></label>
-    <label class="text-sm block">Subject<input id="mtSubject" type="text" value="${esc(cur.subject)}" class="mt-1 w-full rounded-lg border border-line px-3 py-2 bg-white focus:border-brand outline-none"></label>
-    <label class="text-sm block">Keywords (comma-separated)<input id="mtKeywords" type="text" value="${esc(cur.keywords)}" class="mt-1 w-full rounded-lg border border-line px-3 py-2 bg-white focus:border-brand outline-none"></label>
+    <label class="text-sm block">Title<input id="mtTitle" type="text" value="${esc(cur.title)}" class="mt-1 w-full rounded-lg border border-line px-3 py-2 bg-surface focus:border-brand outline-none"></label>
+    <label class="text-sm block">Author<input id="mtAuthor" type="text" value="${esc(cur.author)}" class="mt-1 w-full rounded-lg border border-line px-3 py-2 bg-surface focus:border-brand outline-none"></label>
+    <label class="text-sm block">Subject<input id="mtSubject" type="text" value="${esc(cur.subject)}" class="mt-1 w-full rounded-lg border border-line px-3 py-2 bg-surface focus:border-brand outline-none"></label>
+    <label class="text-sm block">Keywords (comma-separated)<input id="mtKeywords" type="text" value="${esc(cur.keywords)}" class="mt-1 w-full rounded-lg border border-line px-3 py-2 bg-surface focus:border-brand outline-none"></label>
   </div>`; updateAction(); }
 
 /* organize needs container inserted */
@@ -684,9 +676,9 @@ async function doInfo(){ const file=files[0].file; const bytes=await file.arrayB
   resultEl.classList.remove("hidden"); toast("Document info ready.","success"); }
 
 /* results */
-function showDownload(name,sub,dataOrBlob,isBlob=false){ resultEl.innerHTML=`<div class="rounded-xl border border-emerald-200 bg-emerald-50 p-4 flex items-center gap-3"><div class="w-10 h-10 rounded-lg bg-emerald-500 text-white grid place-items-center shrink-0"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 13 4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="min-w-0 flex-1"><p class="font-medium text-emerald-900 truncate">${esc(name)}</p><p class="text-sm text-emerald-700">${sub} · saved to your downloads</p></div><button id="reDl" class="text-sm font-medium text-emerald-800 hover:text-emerald-900 px-3 py-1.5 rounded-lg hover:bg-emerald-100 transition shrink-0">Save again</button></div>`;
+function showDownload(name,sub,dataOrBlob,isBlob=false){ resultEl.innerHTML=`<div class="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4 flex items-center gap-3"><div class="w-10 h-10 rounded-lg bg-emerald-500 text-white grid place-items-center shrink-0"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 13 4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="min-w-0 flex-1"><p class="font-medium text-emerald-200 truncate">${esc(name)}</p><p class="text-sm text-emerald-300/80">${sub} · saved to your downloads</p></div><button id="reDl" class="text-sm font-medium text-emerald-200 hover:text-white px-3 py-1.5 rounded-lg hover:bg-emerald-500/20 transition shrink-0">Save again</button></div>`;
   resultEl.classList.remove("hidden"); document.getElementById("reDl").addEventListener("click",()=>{ isBlob?downloadBlob(dataOrBlob,name):download(dataOrBlob,name,"application/pdf"); }); }
-function showTextResult(text,empty){ resultEl.innerHTML=`<div class="rounded-xl border border-line bg-paper/70 p-4 space-y-3"><div class="flex items-center justify-between"><p class="text-sm font-medium">${empty?"No text found":"Extracted text"}</p><div class="flex gap-2"><button id="copyText" class="text-sm font-medium px-3 py-1.5 rounded-lg border border-line bg-white hover:border-muted/40 transition ${empty?"opacity-40 pointer-events-none":""}">Copy</button><button id="saveText" class="text-sm font-medium px-3 py-1.5 rounded-lg bg-brand text-white hover:bg-brand-dark transition ${empty?"opacity-40 pointer-events-none":""}">Save .txt</button></div></div><textarea id="textOut" readonly class="w-full h-56 rounded-lg border border-line bg-white p-3 text-sm font-mono leading-relaxed resize-y outline-none focus:border-brand">${empty?"No selectable text was found. If this is a scan or photo, use the OCR tool instead.":esc(text)}</textarea></div>`;
+function showTextResult(text,empty){ resultEl.innerHTML=`<div class="rounded-xl border border-line bg-paper/70 p-4 space-y-3"><div class="flex items-center justify-between"><p class="text-sm font-medium">${empty?"No text found":"Extracted text"}</p><div class="flex gap-2"><button id="copyText" class="text-sm font-medium px-3 py-1.5 rounded-lg border border-line bg-surface hover:border-muted/40 transition ${empty?"opacity-40 pointer-events-none":""}">Copy</button><button id="saveText" class="text-sm font-medium px-3 py-1.5 rounded-lg bg-emerald-500 text-white hover:bg-emerald-600 transition ${empty?"opacity-40 pointer-events-none":""}">Save .txt</button></div></div><textarea id="textOut" readonly class="w-full h-56 rounded-lg border border-line bg-surface p-3 text-sm font-mono leading-relaxed resize-y outline-none focus:border-brand">${empty?"No selectable text was found. If this is a scan or photo, use the OCR tool instead.":esc(text)}</textarea></div>`;
   resultEl.classList.remove("hidden"); if(empty)return; document.getElementById("copyText").addEventListener("click",async()=>{try{await navigator.clipboard.writeText(text);toast("Text copied.","success");}catch{toast("Couldn't copy — select manually.","error");}});
   document.getElementById("saveText").addEventListener("click",()=>{downloadBlob(new Blob([text],{type:"text/plain"}),(files[0]?.file.name||"text").replace(/\.[^.]+$/,"")+".txt");toast("Text file saved.","success");}); }
 
@@ -699,8 +691,8 @@ function downloadBlob(blob,name){ const url=URL.createObjectURL(blob); const a=d
 function hexA(hex,a){ const n=parseInt(hex.slice(1),16); return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${a})`; }
 function esc(s){ return (s==null?"":String(s)).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
 const toasts=document.getElementById("toasts");
-function toast(msg,type="success"){ const el=document.createElement("div"); const ok=type==="success"; el.className=`toast-in flex items-start gap-3 rounded-xl border p-3.5 shadow-lg bg-white ${ok?"border-emerald-200":"border-red-200"}`;
-  el.innerHTML=`<div class="w-6 h-6 rounded-full grid place-items-center shrink-0 ${ok?"bg-emerald-500":"bg-brand"} text-white">${ok?'<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 13 4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>':'<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 8v5m0 3h.01" stroke-linecap="round"/></svg>'}</div><p class="text-sm leading-snug ${ok?"text-emerald-900":"text-red-900"} flex-1">${esc(msg)}</p>`;
+function toast(msg,type="success"){ const el=document.createElement("div"); const ok=type==="success"; el.className=`toast-in flex items-start gap-3 rounded-xl border p-3.5 shadow-xl shadow-black/40 bg-surface ${ok?"border-emerald-500/40":"border-red-500/40"}`;
+  el.innerHTML=`<div class="w-6 h-6 rounded-full grid place-items-center shrink-0 ${ok?"bg-emerald-500":"bg-brand"} text-white">${ok?'<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 13 4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>':'<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 8v5m0 3h.01" stroke-linecap="round"/></svg>'}</div><p class="text-sm leading-snug ${ok?"text-emerald-200":"text-red-200"} flex-1">${esc(msg)}</p>`;
   toasts.appendChild(el); setTimeout(()=>{el.style.transition="opacity .3s, transform .3s";el.style.opacity="0";el.style.transform="translateY(8px)";setTimeout(()=>el.remove(),300);},3800); }
 </script>
 <script>
@@ -757,7 +749,7 @@ function initUnitConverter(){
   Object.entries(UC).forEach(([k,c])=>{
     const b = document.createElement("button");
     b.textContent = c.label; b.dataset.k = k;
-    b.className = "px-4 py-2 rounded-full text-sm font-semibold border transition " + (k===ucKey ? "grad-brand text-white border-transparent shadow-sm" : "bg-white border-line text-muted hover:text-ink");
+    b.className = "px-4 py-2 rounded-full text-sm font-semibold border transition " + (k===ucKey ? "grad-brand text-white border-transparent shadow-sm" : "bg-surface border-line text-muted hover:text-ink");
     b.addEventListener("click", ()=>selectUCat(k));
     cats.appendChild(b);
   });
@@ -774,7 +766,7 @@ function selectUCat(k){
   ucKey = k;
   document.querySelectorAll("#uc-cats button").forEach(b=>{
     const on = b.dataset.k===k;
-    b.className = "px-4 py-2 rounded-full text-sm font-semibold border transition " + (on ? "grad-brand text-white border-transparent shadow-sm" : "bg-white border-line text-muted hover:text-ink");
+    b.className = "px-4 py-2 rounded-full text-sm font-semibold border transition " + (on ? "grad-brand text-white border-transparent shadow-sm" : "bg-surface border-line text-muted hover:text-ink");
   });
   const note = document.getElementById("uc-note");
   if(UC[k].currency){ note.textContent = "Fetching live exchange rates…"; loadRates().then(fillUnits).catch(()=>{ note.textContent="Currency rates need an internet connection."; }); }
@@ -803,7 +795,7 @@ function ucCompute(){
   out.value = fmtNum(res);
   const note = document.getElementById("uc-note");
   if(!c.currency) note.textContent = `${fmtNum(v)} ${short(from)} = ${fmtNum(res)} ${short(to)}`;
-  else if(ucRates && ucRates.__date) note.textContent = `Live rate · updated ${ucRates.__date}`;
+  else if(ucRates && ucRates.__date) note.innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-1.5 align-middle"></span>Live rate · updated ${esc(ucRates.__date)}`;
 }
 function convTemp(v,f,t){ let cC; if(f==="C")cC=v; else if(f==="F")cC=(v-32)*5/9; else cC=v-273.15; if(t==="C")return cC; if(t==="F")return cC*9/5+32; return cC+273.15; }
 function short(name){ const m=name.match(/\(([^)]+)\)/); return m?m[1]:name; }
