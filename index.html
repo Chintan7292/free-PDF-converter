@@ -22,6 +22,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -80,6 +82,7 @@
       <nav class="hidden sm:flex items-center gap-1 text-sm font-medium text-muted">
         <button data-go="files" class="px-3.5 py-2 rounded-lg hover:text-ink hover:bg-paper transition">File Converter</button>
         <button data-go="units" class="px-3.5 py-2 rounded-lg hover:text-ink hover:bg-paper transition">Unit Converter</button>
+        <button data-go="translate" class="px-3.5 py-2 rounded-lg hover:text-ink hover:bg-paper transition">Translator</button>
         <button id="installBtn" class="hidden items-center gap-1.5 px-3.5 py-2 rounded-lg text-ink font-semibold hover:bg-paper transition"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0-4-4m4 4 4-4" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 19h14" stroke-linecap="round"/></svg>Install app</button>
         <span class="ml-1 px-3.5 py-2 rounded-full grad-brand text-white text-xs font-semibold shadow-sm shadow-brand/30">100% Free</span>
       </nav>
@@ -94,7 +97,7 @@
       <span class="grad-brand font-display font-bold text-white shadow-lg shadow-brand/30 text-sm sm:text-base tracking-[0.16em] uppercase px-6 py-2.5 rounded-full ring-1 ring-white/40">100% Free · No Sign-up</span>
       <h1 class="font-display font-bold tracking-tight leading-[0.95] mt-6 text-5xl sm:text-6xl md:text-7xl">What do you want<br class="hidden sm:block" /> to <span class="text-grad">convert?</span></h1>
       <p class="mt-5 text-lg sm:text-xl text-muted max-w-2xl mx-auto leading-relaxed">Pick a toolkit below. Everything runs right in your browser — nothing is uploaded.</p>
-      <div class="mt-12 grid sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
+      <div class="mt-12 grid sm:grid-cols-3 gap-6 max-w-5xl mx-auto">
         <button data-go="files" class="mode-card group text-left bg-surface border border-line rounded-3xl p-8 shadow-sm" style="--glow:rgba(255,61,119,.4)">
           <div class="w-16 h-16 rounded-2xl grid place-items-center text-white shadow-md mb-5" style="background:linear-gradient(135deg,#3B82F6,#2563EB)"><svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3h9l3 3v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M14 3v4h4M8 13h8M8 17h5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <h2 class="font-display font-bold text-2xl tracking-tight">File Converter</h2>
@@ -106,6 +109,12 @@
           <h2 class="font-display font-bold text-2xl tracking-tight">Unit Converter</h2>
           <p class="text-muted mt-2 leading-relaxed">Length, weight, temperature, area, volume, speed, data, time &amp; live currency.</p>
           <span class="inline-flex items-center gap-1.5 mt-5 font-semibold" style="color:#34D399">Open converter <svg class="w-5 h-5 arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </button>
+        <button data-go="translate" class="mode-card group text-left bg-surface border border-line rounded-3xl p-8 shadow-sm" style="--glow:rgba(139,92,246,.4)">
+          <div class="w-16 h-16 rounded-2xl grid place-items-center text-white shadow-md mb-5" style="background:linear-gradient(135deg,#8B5CF6,#06B6D4)"><svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 5h7M9 3v2c0 4-2.5 7-5 8m2-3c0 2 2 3.5 4 4M14 20l4-9 4 9m-6.5-3h5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h2 class="font-display font-bold text-2xl tracking-tight">Translator</h2>
+          <p class="text-muted mt-2 leading-relaxed">Translate text, files &amp; voice across 40+ languages, with audio playback.</p>
+          <span class="inline-flex items-center gap-1.5 mt-5 font-semibold" style="color:#A78BFA">Open translator <svg class="w-5 h-5 arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </button>
       </div>
     </div>
@@ -211,6 +220,117 @@
       </div>
     </main>
   </div><!-- /view-units -->
+
+  <!-- ============ TRANSLATOR ============ -->
+  <div id="view-translate" class="hidden">
+    <section class="relative overflow-hidden border-b border-line">
+      <div class="hero-mesh"></div>
+      <div class="max-w-4xl mx-auto px-5 pt-12 pb-8 text-center">
+        <h1 class="font-display font-bold tracking-tight text-4xl sm:text-5xl">Translator</h1>
+        <p class="mt-3 text-muted text-lg">Text, files and voice across 40+ languages — with audio playback. Runs in your browser.</p>
+      </div>
+    </section>
+    <main class="max-w-3xl mx-auto px-5 py-8 space-y-5">
+      <div class="bg-surface border border-line rounded-2xl p-4 sm:p-5">
+        <div class="grid sm:grid-cols-[1fr_auto_1fr] gap-3 items-end">
+          <div>
+            <label class="text-sm font-medium text-muted">From</label>
+            <input id="trSrcSearch" type="text" placeholder="Search language…" class="mt-1 w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm outline-none focus:border-brand" />
+            <select id="trSrc" class="mt-2 w-full rounded-lg border border-line bg-surface px-3 py-2.5 outline-none focus:border-brand"></select>
+          </div>
+          <button id="trSwap" class="mb-1 mx-auto w-11 h-11 rounded-xl border border-line grid place-items-center text-muted hover:text-ink hover:border-white/25 transition" aria-label="Swap languages"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 4v13m0 0-3-3m3 3 3-3M17 20V7m0 0-3 3m3-3 3 3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <div>
+            <label class="text-sm font-medium text-muted">To</label>
+            <input id="trTgtSearch" type="text" placeholder="Search language…" class="mt-1 w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm outline-none focus:border-brand" />
+            <select id="trTgt" class="mt-2 w-full rounded-lg border border-line bg-surface px-3 py-2.5 outline-none focus:border-brand"></select>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-surface border border-line rounded-2xl p-4 sm:p-5">
+        <div class="flex flex-wrap gap-2 mb-4" id="trTabs">
+          <button data-tab="text" class="tr-tab px-4 py-2 rounded-full text-sm font-semibold border grad-brand text-white border-transparent">Text</button>
+          <button data-tab="file" class="tr-tab px-4 py-2 rounded-full text-sm font-semibold border bg-surface border-line text-muted hover:text-ink">File / Image</button>
+          <button data-tab="voice" class="tr-tab px-4 py-2 rounded-full text-sm font-semibold border bg-surface border-line text-muted hover:text-ink">Voice</button>
+        </div>
+
+        <div data-panel="text" class="tr-panel">
+          <textarea id="trInput" maxlength="5000" placeholder="Paste or type text here…  (Ctrl+Enter to translate)" class="w-full min-h-[140px] rounded-xl border border-line bg-page px-4 py-3 text-[15px] leading-relaxed outline-none focus:border-brand resize-y"></textarea>
+          <div class="flex justify-between items-center mt-2 text-xs text-muted"><span id="trDetected"></span><span><span id="trChar">0</span> / 5000</span></div>
+        </div>
+
+        <div data-panel="file" class="tr-panel hidden">
+          <div id="trDrop" class="dropzone relative cursor-pointer rounded-xl border-2 border-dashed px-6 py-9 text-center">
+            <input id="trFileInput" type="file" class="hidden" accept=".jpg,.jpeg,.png,.webp,.bmp,.gif,.pdf,.docx,.txt,.csv,.xlsx,.xls" />
+            <div class="mx-auto w-12 h-12 rounded-xl bg-surface border border-line grid place-items-center mb-3"><svg class="w-6 h-6 text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 16V4m0 0L8 8m4-4 4 4" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke-linecap="round"/></svg></div>
+            <p class="font-medium">Drop a file here, or <span class="text-brand">browse</span></p>
+            <p class="text-sm text-muted mt-1">Image (OCR), PDF, Word, Excel, CSV, TXT</p>
+          </div>
+          <div id="trFileInfo" class="hidden items-center gap-3 bg-page border border-line rounded-xl p-3 mt-3">
+            <span id="trFileIcon" class="text-xl">📄</span>
+            <div class="min-w-0"><p id="trFileName" class="text-sm font-medium truncate"></p><p id="trFileDetail" class="text-xs text-muted"></p></div>
+          </div>
+          <div id="trProgWrap" class="hidden mt-3"><p id="trProgLabel" class="text-xs text-muted mb-1"></p><div class="h-1.5 rounded-full bg-page overflow-hidden"><div id="trProgBar" class="h-full bg-brand transition-all" style="width:0%"></div></div></div>
+          <div id="trPreview" class="hidden mt-3 max-h-40 overflow-auto text-sm text-muted whitespace-pre-wrap bg-page border border-line rounded-xl p-3"></div>
+        </div>
+
+        <div data-panel="voice" class="tr-panel hidden">
+          <p class="text-sm text-muted mb-3">Click record, speak in your source language, and it auto-translates when you stop.</p>
+          <div class="flex items-center gap-3 flex-wrap">
+            <button id="trRecordBtn" class="px-4 py-2.5 rounded-xl bg-brand text-white font-semibold hover:brightness-110 transition inline-flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-white"></span> Start Recording</button>
+            <span class="text-xs text-muted">Works best in Chrome or Edge</span>
+          </div>
+          <div id="trVoiceStatus" class="hidden items-center gap-2 mt-3 text-sm text-emerald-300"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span><span id="trVoiceStatusText">Listening…</span></div>
+          <div id="trVoicePreview" class="hidden mt-3 text-sm text-muted whitespace-pre-wrap bg-page border border-line rounded-xl p-3"></div>
+        </div>
+
+        <div class="flex gap-2 mt-4 flex-wrap items-center">
+          <button id="trTranslateBtn" class="rounded-xl grad-brand text-white font-semibold px-6 py-3 shadow-sm shadow-brand/20 hover:brightness-110 transition inline-flex items-center gap-2"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h7M9 3v2c0 4-2.5 7-5 8M14 20l4-9 4 9m-6.5-3h5" stroke-linecap="round" stroke-linejoin="round"/></svg> Translate</button>
+          <button id="trSummarizeBtn" class="rounded-xl border border-line bg-surface text-ink font-medium px-4 py-3 hover:border-white/25 transition">Summarize</button>
+          <button id="trClearBtn" class="rounded-xl border border-line bg-surface text-muted font-medium px-4 py-3 hover:text-ink hover:border-white/25 transition">Clear</button>
+        </div>
+      </div>
+
+      <div id="trSummaryCard" class="hidden bg-surface border border-line rounded-2xl p-4 sm:p-5">
+        <div class="flex justify-between items-center mb-3 flex-wrap gap-2">
+          <span class="text-xs font-bold text-emerald-300 uppercase tracking-wide">Summary</span>
+          <div class="flex gap-2">
+            <button id="trCopySummaryBtn" class="text-sm font-medium px-3 py-1.5 rounded-lg border border-line bg-surface hover:border-white/25 transition">Copy</button>
+            <button id="trCloseSummaryBtn" class="text-sm font-medium px-3 py-1.5 rounded-lg border border-red-500/40 text-red-300 hover:bg-red-500/10 transition">Close</button>
+          </div>
+        </div>
+        <div id="trSummaryBox" class="min-h-[70px] bg-page border border-line rounded-xl p-3 text-[15px] leading-relaxed whitespace-pre-wrap"></div>
+        <div class="mt-3 flex gap-2 flex-wrap items-center text-xs text-muted">Length:
+          <button data-sum="short" class="tr-sum px-3 py-1.5 rounded-lg border border-line bg-surface hover:text-ink transition">Short</button>
+          <button data-sum="medium" class="tr-sum px-3 py-1.5 rounded-lg border border-line bg-surface hover:text-ink transition">Medium</button>
+          <button data-sum="bullets" class="tr-sum px-3 py-1.5 rounded-lg border border-line bg-surface hover:text-ink transition">Bullets</button>
+        </div>
+      </div>
+
+      <div class="bg-surface border border-line rounded-2xl p-4 sm:p-5">
+        <div class="flex justify-between items-center mb-3 flex-wrap gap-2">
+          <span id="trOutLabel" class="text-xs font-bold text-muted uppercase tracking-wide">Translation</span>
+          <button id="trCopyBtn" class="hidden text-sm font-medium px-3 py-1.5 rounded-lg bg-emerald-500 text-white hover:bg-emerald-600 transition">Copy</button>
+        </div>
+        <div id="trOutBox" class="min-h-[80px] bg-page border border-line rounded-xl p-3 text-[15px] leading-relaxed whitespace-pre-wrap text-slate-400">Your translation will appear here…</div>
+        <div id="trAudioSection" class="hidden mt-4 border-t border-line pt-4">
+          <div class="text-xs font-bold text-emerald-300 uppercase tracking-wide mb-2">Audio playback</div>
+          <div class="flex gap-2 flex-wrap items-center">
+            <button id="trPlayBtn" class="text-sm font-medium px-4 py-2 rounded-lg bg-emerald-500 text-white hover:bg-emerald-600 transition">▶ Play</button>
+            <button id="trStopBtn" class="text-sm font-medium px-4 py-2 rounded-lg border border-red-500/40 text-red-300 hover:bg-red-500/10 transition">■ Stop</button>
+            <label class="text-xs text-muted flex items-center gap-1">Speed
+              <select id="trSpeed" class="rounded-lg border border-line bg-surface px-2 py-1.5 text-sm outline-none focus:border-brand"><option value="0.7">Slow</option><option value="0.9" selected>Normal</option><option value="1.2">Fast</option><option value="1.5">Very fast</option></select>
+            </label>
+            <label class="text-xs text-muted flex items-center gap-1">Voice
+              <select id="trGender" class="rounded-lg border border-line bg-surface px-2 py-1.5 text-sm outline-none focus:border-brand"><option value="female" selected>Female</option><option value="male">Male</option></select>
+            </label>
+          </div>
+          <audio id="trAudio" controls class="w-full mt-3 rounded-lg"></audio>
+        </div>
+      </div>
+      <p class="text-center text-xs text-muted">Translation &amp; audio use Google's free public endpoint and need an internet connection. Text extraction runs on your device.</p>
+    </main>
+  </div><!-- /view-translate -->
 
   <footer class="border-t border-line bg-surface">
     <div class="max-w-6xl mx-auto px-5 py-10">
@@ -711,11 +831,12 @@ window.addEventListener("appinstalled", () => { installBtn?.classList.add("hidde
 <script>
 /* ============ view router: home / files / units ============ */
 (function(){
-  const views = { home:document.getElementById("view-home"), files:document.getElementById("view-files"), units:document.getElementById("view-units") };
-  let unitsInit = false;
+  const views = { home:document.getElementById("view-home"), files:document.getElementById("view-files"), units:document.getElementById("view-units"), translate:document.getElementById("view-translate") };
+  let unitsInit = false, translateInit = false;
   function show(v){
     Object.entries(views).forEach(([k,el])=>{ if(el) el.classList.toggle("hidden", k!==v); });
     if(v==="units" && !unitsInit){ initUnitConverter(); unitsInit = true; }
+    if(v==="translate" && !translateInit){ initTranslator(); translateInit = true; }
     window.scrollTo({top:0, behavior:"auto"});
     try{ history.replaceState(null,"", v==="home"?"#":"#"+v); }catch(e){}
   }
@@ -727,7 +848,7 @@ window.addEventListener("appinstalled", () => { installBtn?.classList.add("hidde
   });
   // deep-link support
   const h = (location.hash||"").replace("#","");
-  show(h==="files"||h==="units" ? h : "home");
+  show(h==="files"||h==="units"||h==="translate" ? h : "home");
   window.__showView = show;
 })();
 
@@ -853,6 +974,212 @@ async function loadRates(){
   Object.entries(data.rates).forEach(([code,rate])=>{ const nm = NAMES[code] ? `${NAMES[code]} (${code})` : code; out[nm] = rate; });
   out.__date = data.time_last_update_utc ? data.time_last_update_utc.replace(" 00:00:01 +0000","") : "";
   ucRates = out; return out;
+}
+</script>
+<script>
+/* ============ Translator (client-side; Google free endpoints) ============ */
+function initTranslator(){
+  const LANG_NAMES={auto:"Auto-detect",en:"English",gu:"Gujarati",hi:"Hindi",es:"Spanish",fr:"French",de:"German",it:"Italian",pt:"Portuguese",ru:"Russian","zh-CN":"Chinese (Simplified)","zh-TW":"Chinese (Traditional)",ja:"Japanese",ko:"Korean",ar:"Arabic",bn:"Bengali",tr:"Turkish",nl:"Dutch",pl:"Polish",sv:"Swedish",da:"Danish",fi:"Finnish",no:"Norwegian",vi:"Vietnamese",th:"Thai",id:"Indonesian",ms:"Malay",uk:"Ukrainian",fa:"Persian",he:"Hebrew",ro:"Romanian",hu:"Hungarian",cs:"Czech",el:"Greek",sk:"Slovak",bg:"Bulgarian",hr:"Croatian",sw:"Swahili",ur:"Urdu",ta:"Tamil",te:"Telugu",ml:"Malayalam"};
+  const VOICE_LOCALES={en:"en-US",gu:"gu-IN",hi:"hi-IN",es:"es-ES",fr:"fr-FR",de:"de-DE",it:"it-IT",pt:"pt-PT",ru:"ru-RU","zh-CN":"zh-CN","zh-TW":"zh-TW",ja:"ja-JP",ko:"ko-KR",ar:"ar-SA",bn:"bn-BD",tr:"tr-TR",nl:"nl-NL",pl:"pl-PL",sv:"sv-SE",da:"da-DK",fi:"fi-FI",no:"nb-NO",vi:"vi-VN",th:"th-TH",id:"id-ID",ms:"ms-MY",uk:"uk-UA",fa:"fa-IR",he:"he-IL",ro:"ro-RO",hu:"hu-HU",cs:"cs-CZ",el:"el-GR",sk:"sk-SK",bg:"bg-BG",hr:"hr-HR",sw:"sw-KE",ur:"ur-PK",ta:"ta-IN",te:"te-IN",ml:"ml-IN"};
+  const SR_LANG_MAP=Object.assign({},VOICE_LOCALES,{auto:"en-US",pt:"pt-BR"});
+  const ALL=Object.entries(LANG_NAMES).map(([v,l])=>({v,l}));
+  const TGT=ALL.filter(x=>x.v!=="auto");
+  const FILE_ICONS={pdf:"📄",docx:"📝",doc:"📝",xlsx:"📊",xls:"📊",csv:"📊",txt:"📋",jpg:"🖼",jpeg:"🖼",png:"🖼",webp:"🖼",bmp:"🖼",gif:"🖼"};
+
+  let srcValue="auto", tgtValue="en", translatedText="", extractedText="";
+  let recognition=null, isRecording=false, chunks=[], chunkIndex=0, audioReady=false;
+
+  const $=(id)=>document.getElementById(id);
+  const note=(m)=>{ try{ toast(m.replace(/^[^\p{L}\p{N}]+/u,"").trim()||m, /❌|⚠/.test(m)?"error":"success"); }catch{ } };
+
+  // populate language selects
+  function fillLang(sel, list, val){ sel.innerHTML=""; list.forEach(({v,l})=>sel.appendChild(new Option(l,v))); sel.value=val; }
+  const srcSel=$("trSrc"), tgtSel=$("trTgt");
+  fillLang(srcSel, ALL, "auto"); fillLang(tgtSel, TGT, "en");
+  srcSel.addEventListener("change", ()=>srcValue=srcSel.value);
+  tgtSel.addEventListener("change", ()=>tgtValue=tgtSel.value);
+  function langFilter(box, sel, list){ const q=(box.value||"").trim().toLowerCase(); const cur=sel.value; const f=q?list.filter(x=>x.l.toLowerCase().includes(q)):list; const use=f.length?f:list; sel.innerHTML=""; use.forEach(({v,l})=>sel.appendChild(new Option(l,v))); if(use.some(x=>x.v===cur))sel.value=cur; }
+  $("trSrcSearch").addEventListener("input", (e)=>{ langFilter(e.target, srcSel, ALL); srcValue=srcSel.value; });
+  $("trTgtSearch").addEventListener("input", (e)=>{ langFilter(e.target, tgtSel, TGT); tgtValue=tgtSel.value; });
+
+  // tabs
+  document.querySelectorAll("#trTabs .tr-tab").forEach(b=>b.addEventListener("click",()=>{
+    document.querySelectorAll("#trTabs .tr-tab").forEach(x=>x.className="tr-tab px-4 py-2 rounded-full text-sm font-semibold border bg-surface border-line text-muted hover:text-ink");
+    b.className="tr-tab px-4 py-2 rounded-full text-sm font-semibold border grad-brand text-white border-transparent";
+    const t=b.dataset.tab;
+    document.querySelectorAll(".tr-panel").forEach(p=>p.classList.toggle("hidden", p.dataset.panel!==t));
+  }));
+
+  // input meta
+  $("trInput").addEventListener("input", function(){ $("trChar").textContent=this.value.length; });
+  $("trInput").addEventListener("keydown", e=>{ if(e.ctrlKey&&e.key==="Enter") doTranslate(); });
+
+  // swap
+  $("trSwap").addEventListener("click", ()=>{
+    if(srcValue==="auto"){ note("⚠️ Cannot swap Auto-detect"); return; }
+    [srcValue,tgtValue]=[tgtValue,srcValue];
+    if([...srcSel.options].some(o=>o.value===srcValue)) srcSel.value=srcValue;
+    if([...tgtSel.options].some(o=>o.value===tgtValue)) tgtSel.value=tgtValue;
+    const inp=$("trInput");
+    if(translatedText&&inp.value.trim()){ const tmp=inp.value; inp.value=translatedText; $("trChar").textContent=inp.value.length; translatedText=tmp; $("trOutBox").textContent=translatedText; }
+  });
+
+  // dropzone
+  const drop=$("trDrop"), fileInput=$("trFileInput");
+  drop.addEventListener("click", ()=>fileInput.click());
+  fileInput.addEventListener("change", e=>{ if(e.target.files[0]) handleFile(e.target.files[0]); });
+  ["dragenter","dragover"].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add("drag");}));
+  ["dragleave","drop"].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove("drag");}));
+  drop.addEventListener("drop", e=>{ if(e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); });
+
+  // buttons
+  $("trTranslateBtn").addEventListener("click", doTranslate);
+  $("trSummarizeBtn").addEventListener("click", ()=>doSummarize("medium"));
+  $("trClearBtn").addEventListener("click", clearAll);
+  $("trCopyBtn").addEventListener("click", ()=>{ if(translatedText) navigator.clipboard.writeText(translatedText).then(()=>note("✅ Copied")).catch(()=>{}); });
+  $("trCopySummaryBtn").addEventListener("click", ()=>{ const t=$("trSummaryBox").textContent; if(t) navigator.clipboard.writeText(t).then(()=>note("✅ Summary copied")).catch(()=>{}); });
+  $("trCloseSummaryBtn").addEventListener("click", ()=>$("trSummaryCard").classList.add("hidden"));
+  document.querySelectorAll(".tr-sum").forEach(b=>b.addEventListener("click",()=>doSummarize(b.dataset.sum)));
+  $("trPlayBtn").addEventListener("click", togglePlayPause);
+  $("trStopBtn").addEventListener("click", stopAudio);
+  $("trSpeed").addEventListener("change", ()=>$("trAudio").playbackRate=parseFloat($("trSpeed").value));
+  $("trRecordBtn").addEventListener("click", ()=>isRecording?stopRecording():startRecording());
+  const audio=$("trAudio");
+  audio.onplay=()=>$("trPlayBtn").textContent="⏸ Pause";
+  audio.onpause=()=>{ if(!audio.ended)$("trPlayBtn").textContent="▶ Play"; };
+  audio.onended=()=>$("trPlayBtn").textContent="▶ Play";
+
+  async function doTranslate(){
+    const text=$("trInput").value.trim();
+    if(!text){ note("⚠️ Enter or upload some text first"); return; }
+    if(srcValue!=="auto"&&srcValue===tgtValue){ note("⚠️ Source and target are the same"); return; }
+    const btn=$("trTranslateBtn"); btn.disabled=true;
+    $("trOutBox").className="min-h-[80px] bg-page border border-line rounded-xl p-3 text-[15px] text-slate-400"; $("trOutBox").textContent="Translating…";
+    $("trCopyBtn").classList.add("hidden"); $("trAudioSection").classList.add("hidden"); $("trDetected").textContent=""; stopAudio();
+    try{
+      const url=`https://translate.googleapis.com/translate_a/single?client=gtx&sl=${srcValue}&tl=${tgtValue}&dt=t&dt=ld&q=${encodeURIComponent(text)}`;
+      const res=await fetch(url); if(!res.ok) throw new Error("Network error "+res.status);
+      const data=await res.json(); let result="";
+      if(data[0]) data[0].forEach(s=>{ if(s&&s[0]) result+=s[0]; });
+      if(!result) throw new Error("Empty result");
+      translatedText=result;
+      const box=$("trOutBox"); box.className="min-h-[80px] bg-page border border-line rounded-xl p-3 text-[15px] leading-relaxed whitespace-pre-wrap"; box.textContent=result;
+      $("trOutLabel").textContent="Translation → "+(LANG_NAMES[tgtValue]||tgtValue);
+      const dc=(data[8]&&data[8][0]&&data[8][0][0])?data[8][0][0]:data[2];
+      if(srcValue==="auto"&&dc) $("trDetected").textContent="Detected: "+(LANG_NAMES[dc]||dc);
+      $("trCopyBtn").classList.remove("hidden"); $("trAudioSection").classList.remove("hidden"); $("trPlayBtn").textContent="▶ Play";
+    }catch(e){
+      const box=$("trOutBox"); box.className="min-h-[80px] bg-page border border-red-500/30 rounded-xl p-3 text-[15px] text-red-300"; box.textContent="Translation failed: "+e.message+". Check your internet connection.";
+    }
+    btn.disabled=false;
+  }
+
+  function doSummarize(style){
+    const text=$("trInput").value.trim();
+    if(!text){ note("⚠️ Enter or upload some text first"); return; }
+    if(text.length<100){ note("⚠️ Text is too short to summarize"); return; }
+    const card=$("trSummaryCard"), box=$("trSummaryBox"); card.classList.remove("hidden");
+    try{ box.textContent=extractiveSummarize(text, style||"medium"); card.scrollIntoView({behavior:"smooth",block:"nearest"}); }
+    catch(e){ box.textContent="Summary failed: "+e.message; }
+  }
+  function extractiveSummarize(text,style){
+    const clean=text.replace(/\s+/g," ").trim();
+    const sentences=clean.match(/[^.!?]+[.!?]+/g)||[clean];
+    const total=sentences.length; if(total<=3) return clean;
+    const words=clean.toLowerCase().replace(/[^a-z0-9\u0900-\u097f\u0a80-\u0aff\u0600-\u06ff\s]/g,"").split(/\s+/);
+    const freq={}; const sw=new Set(["the","a","an","is","are","was","were","and","or","but","in","on","at","to","for","of","with","this","that","it","as","by","from","be","been","have","has","had","will","would","could","should","i","we","you","he","she","they","my","our","your","his","her","their","its"]);
+    words.forEach(w=>{ if(w.length>2&&!sw.has(w)) freq[w]=(freq[w]||0)+1; });
+    const maxF=Math.max(...Object.values(freq),1); Object.keys(freq).forEach(k=>freq[k]=freq[k]/maxF);
+    const scored=sentences.map((s,i)=>{ const ws=s.toLowerCase().split(/\s+/); const score=ws.reduce((a,w)=>a+(freq[w]||0),0)/Math.max(ws.length,1); return {s:s.trim(),score:score+(i===0||i===total-1?0.3:0),i}; });
+    let count=style==="short"?2:style==="bullets"?5:4; count=Math.min(count,total);
+    const top=scored.sort((a,b)=>b.score-a.score).slice(0,count).sort((a,b)=>a.i-b.i);
+    return style==="bullets"?top.map(x=>"• "+x.s).join("\n"):top.map(x=>x.s).join(" ");
+  }
+
+  function splitText(text,max){
+    const out=[]; const sents=text.split(/(?<=[.!?।。！？])\s+/); let cur="";
+    for(const s of sents){
+      if(s.length>max){ if(cur){out.push(cur.trim());cur="";} const wds=s.split(" "); let wc=""; for(const w of wds){ if((wc+" "+w).trim().length>max){ if(wc)out.push(wc.trim()); wc=w; } else wc=(wc+" "+w).trim(); } if(wc)out.push(wc.trim()); }
+      else if((cur+" "+s).trim().length>max){ if(cur)out.push(cur.trim()); cur=s; }
+      else cur=(cur+" "+s).trim();
+    }
+    if(cur.trim())out.push(cur.trim()); return out.filter(c=>c.length>0);
+  }
+  function togglePlayPause(){ const a=$("trAudio"); if(audioReady&&!a.ended){ a.paused?a.play():a.pause(); return; } chunks=splitText(translatedText,180); chunkIndex=0; audioReady=false; playChunk(); }
+  function playChunk(){
+    const a=$("trAudio"); if(chunkIndex>=chunks.length){ $("trPlayBtn").textContent="▶ Play"; audioReady=false; return; }
+    const gender=$("trGender").value, speed=parseFloat($("trSpeed").value);
+    a.src=`https://translate.googleapis.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(chunks[chunkIndex])}&tl=${tgtValue}&client=gtx&ttsspeed=1`;
+    a.preservesPitch=false; a.mozPreservesPitch=false; a.playbackRate=gender==="male"?speed*0.82:speed*1.05; audioReady=true;
+    a.onended=()=>{ chunkIndex++; if(chunkIndex<chunks.length) playChunk(); else { audioReady=false; $("trPlayBtn").textContent="▶ Play"; } };
+    a.onerror=()=>{ audioReady=false; $("trPlayBtn").textContent="▶ Play"; useBrowserSpeech(); };
+    a.play().catch(()=>{ audioReady=false; $("trPlayBtn").textContent="▶ Play"; useBrowserSpeech(); });
+  }
+  function useBrowserSpeech(){
+    if(!("speechSynthesis" in window)){ note("❌ Audio not supported"); return; }
+    window.speechSynthesis.cancel();
+    const utt=new SpeechSynthesisUtterance(translatedText); utt.lang=VOICE_LOCALES[tgtValue]||"en-US"; utt.rate=parseFloat($("trSpeed").value);
+    const gender=$("trGender").value;
+    const trySpeak=()=>{ const voices=window.speechSynthesis.getVoices(); const lc=(VOICE_LOCALES[tgtValue]||"en-US").split("-")[0]; const lv=voices.filter(v=>v.lang.startsWith(lc));
+      const fKw=["female","woman","zira","susan","victoria","samantha","karen","moira"], mKw=["male","man","david","mark","james","daniel","fred"]; const kw=gender==="female"?fKw:mKw;
+      const match=lv.find(v=>kw.some(k=>v.name.toLowerCase().includes(k)))||lv[0]; if(match)utt.voice=match;
+      utt.onstart=()=>$("trPlayBtn").textContent="⏸ Pause"; utt.onend=utt.onerror=()=>$("trPlayBtn").textContent="▶ Play"; window.speechSynthesis.speak(utt); };
+    window.speechSynthesis.getVoices().length===0?window.speechSynthesis.onvoiceschanged=trySpeak:trySpeak();
+    note("🔊 Using browser voice");
+  }
+  function stopAudio(){ const a=$("trAudio"); a.onended=null; a.onerror=null; a.pause(); a.src=""; audioReady=false; chunkIndex=0; chunks=[]; window.speechSynthesis.cancel(); $("trPlayBtn").textContent="▶ Play"; }
+
+  // voice
+  function startRecording(){
+    const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+    if(!SR){ note("❌ Voice not supported. Use Chrome or Edge."); return; }
+    recognition=new SR(); recognition.lang=SR_LANG_MAP[srcValue]||"en-US"; recognition.continuous=true; recognition.interimResults=true; recognition.maxAlternatives=1;
+    let final="", silence=null;
+    recognition.onstart=()=>{ isRecording=true; final=""; const b=$("trRecordBtn"); b.innerHTML='<span class="w-2.5 h-2.5 rounded-full bg-white animate-pulse"></span> Stop Recording'; $("trVoiceStatus").classList.remove("hidden"); $("trVoiceStatus").classList.add("flex"); $("trVoiceStatusText").textContent=`Listening in ${LANG_NAMES[srcValue]||"selected language"}…`; };
+    recognition.onresult=e=>{ clearTimeout(silence); let interim=""; for(let i=e.resultIndex;i<e.results.length;i++){ const t=e.results[i][0].transcript; if(e.results[i].isFinal)final+=t+" "; else interim=t; }
+      const txt=(final+interim).trim(); $("trInput").value=txt; $("trChar").textContent=txt.length; const vp=$("trVoicePreview"); vp.textContent=txt; vp.classList.toggle("hidden",!txt);
+      $("trVoiceStatusText").textContent=interim?`Hearing: "${interim}"`:`Listening in ${LANG_NAMES[srcValue]||"selected language"}…`;
+      silence=setTimeout(()=>{ if(isRecording) stopRecording(); },2500); };
+    recognition.onerror=e=>{ clearTimeout(silence); const msgs={"not-allowed":"❌ Mic access denied.","no-speech":"⚠️ No speech detected.","network":"❌ Network error.","language-not-supported":`❌ ${LANG_NAMES[srcValue]} not supported for voice.`}; note(msgs[e.error]||"❌ "+e.error); stopRecordingUI(); };
+    recognition.onend=()=>{ clearTimeout(silence); stopRecordingUI(); const text=$("trInput").value.trim(); if(text){ note("✅ Voice captured! Translating…"); setTimeout(doTranslate,400); } else note("⚠️ No speech detected. Try again."); };
+    try{ recognition.start(); }catch(e){ note("❌ Could not start: "+e.message); stopRecordingUI(); }
+  }
+  function stopRecording(){ isRecording=false; if(recognition)recognition.stop(); stopRecordingUI(); }
+  function stopRecordingUI(){ isRecording=false; const b=$("trRecordBtn"); b.innerHTML='<span class="w-2.5 h-2.5 rounded-full bg-white"></span> Start Recording'; $("trVoiceStatus").classList.add("hidden"); $("trVoiceStatus").classList.remove("flex"); }
+
+  // files
+  async function handleFile(file){
+    if(!file) return; const ext=file.name.split(".").pop().toLowerCase();
+    $("trFileIcon").textContent=FILE_ICONS[ext]||"📁"; $("trFileName").textContent=file.name;
+    $("trFileInfo").classList.remove("hidden"); $("trFileInfo").classList.add("flex"); $("trFileDetail").textContent="Reading…";
+    prog(true,"Reading file…",10); extractedText="";
+    try{
+      if(["jpg","jpeg","png","webp","bmp","gif"].includes(ext)) await extractImage(file);
+      else if(ext==="pdf") await extractPDF(file);
+      else if(["docx","doc"].includes(ext)) await extractDocx(file);
+      else if(["xlsx","xls"].includes(ext)) await extractExcel(file);
+      else extractedText=await file.text();
+      prog(true,"Done!",100); setTimeout(()=>prog(false),700);
+      if(extractedText.trim()){ $("trFileDetail").textContent=extractedText.length+" characters extracted"; const p=$("trPreview"); p.textContent=extractedText; p.classList.remove("hidden"); $("trInput").value=extractedText; $("trChar").textContent=extractedText.length; note("✅ Text extracted! Click Translate."); }
+      else note("⚠️ Could not extract text from this file.");
+    }catch(e){ prog(false); note("❌ Error: "+e.message); }
+  }
+  async function extractImage(file){ prog(true,"Loading OCR…",15); await loadTesseract(); prog(true,"Running OCR…",25);
+    const result=await Tesseract.recognize(file,"eng+hin+guj+ara+fra+deu+spa+por+rus+chi_sim+jpn+kor",{ logger:m=>{ if(m.status==="recognizing text") prog(true,"OCR: "+Math.round(m.progress*100)+"%",m.progress*100); } });
+    extractedText=result.data.text.trim(); }
+  async function extractPDF(file){ prog(true,"Reading PDF…",15); const ab=await file.arrayBuffer(); const pdf=await pdfjsLib.getDocument({data:ab}).promise; let text="";
+    for(let i=1;i<=pdf.numPages;i++){ prog(true,`Page ${i} of ${pdf.numPages}…`,15+(i/pdf.numPages*80)); const page=await pdf.getPage(i); const c=await page.getTextContent(); text+=c.items.map(s=>s.str).join(" ")+"\n\n"; }
+    extractedText=text.trim(); $("trFileDetail").textContent=pdf.numPages+" pages"; }
+  async function extractDocx(file){ prog(true,"Reading Word…",30); const ab=await file.arrayBuffer(); const r=await mammoth.extractRawText({arrayBuffer:ab}); extractedText=r.value.trim(); }
+  async function extractExcel(file){ prog(true,"Reading spreadsheet…",30); const ab=await file.arrayBuffer(); const wb=XLSX.read(ab,{type:"array"}); let text=""; wb.SheetNames.forEach(n=>{ text+=`[Sheet: ${n}]\n`+XLSX.utils.sheet_to_csv(wb.Sheets[n])+"\n\n"; }); extractedText=text.trim(); }
+  function prog(show,label,pct){ const w=$("trProgWrap"); w.classList.toggle("hidden",!show); if(show){ $("trProgLabel").textContent=label||""; $("trProgBar").style.width=(pct||0)+"%"; } }
+
+  function clearAll(){
+    $("trInput").value=""; $("trChar").textContent="0"; $("trDetected").textContent=""; stopRecording(); stopAudio(); translatedText=""; extractedText="";
+    const box=$("trOutBox"); box.className="min-h-[80px] bg-page border border-line rounded-xl p-3 text-[15px] text-slate-400"; box.textContent="Your translation will appear here…";
+    $("trOutLabel").textContent="Translation"; $("trCopyBtn").classList.add("hidden"); $("trAudioSection").classList.add("hidden"); $("trSummaryCard").classList.add("hidden");
+    $("trFileInfo").classList.add("hidden"); $("trPreview").classList.add("hidden"); $("trVoicePreview").classList.add("hidden"); $("trFileInput").value=""; prog(false);
+  }
 }
 </script>
 </body>
