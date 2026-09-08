@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script>
+  /* SPA path restore — decodes the ?/ redirect from 404.html (GitHub Pages) */
+  (function(l){ if(l.search[1]==="/"){ var d=l.search.slice(1).split("&").map(function(s){return s.replace(/~and~/g,"&");}).join("&"); window.history.replaceState(null,null,l.pathname.slice(0,-1)+d+l.hash); } }(window.location));
+</script>
 <title>My Convert Box — PDF & Unit Converter Tools</title>
 <meta name="description" content="Free, private, in-browser PDF tools. Merge, split, convert, compress, sign, OCR and more — no sign-up, no uploads, works offline. Your files never leave your device." />
 <meta name="theme-color" content="#0F172A" />
@@ -66,6 +70,10 @@
   .page-thumb{transition:box-shadow .15s ease;} .page-thumb:hover{box-shadow:0 6px 18px rgba(0,0,0,.4);}
   .tile-badge svg{ width:16px; height:16px; }
   input,select,textarea{ color-scheme:dark; }
+  .legal-body h3{ color:#F8FAFC; font-weight:600; font-size:1.05rem; margin-top:1.25rem; }
+  .legal-body p{ color:#94A3B8; }
+  .legal-body strong{ color:#E2E8F0; }
+  .legal-body a{ text-decoration:underline; }
   input::placeholder,textarea::placeholder{ color:#64748B; }
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;} html{scroll-behavior:auto;}}
 </style>
@@ -332,6 +340,15 @@
     </main>
   </div><!-- /view-translate -->
 
+  <!-- ============ LEGAL PAGES ============ -->
+  <div id="view-legal" class="hidden">
+    <section class="max-w-3xl mx-auto px-5 py-12">
+      <button data-route="/" class="text-sm text-brand hover:underline inline-flex items-center gap-1 mb-6"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5m6-6-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg> Back to home</button>
+      <h1 id="legal-title" class="font-display font-bold text-3xl sm:text-4xl tracking-tight mb-6"></h1>
+      <div id="legal-body" class="legal-body space-y-4 text-slate-300 leading-relaxed"></div>
+    </section>
+  </div><!-- /view-legal -->
+
   <footer class="border-t border-line bg-surface">
     <div class="max-w-6xl mx-auto px-5 py-10">
       <div class="rounded-3xl grad-brand px-6 sm:px-10 py-8 text-white flex flex-col sm:flex-row items-center justify-between gap-5 shadow-xl shadow-brand/20">
@@ -345,6 +362,14 @@
         <span class="font-display font-bold tracking-tight text-lg uppercase">My <span class="text-grad">Convert</span> Box</span>
         <span>Built with pdf-lib, pdf.js, Tesseract &amp; Tailwind — 100% client-side.</span>
       </div>
+      <nav class="mt-5 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
+        <a href="/pdf" data-route="/pdf" class="text-muted hover:text-ink transition">Tools</a>
+        <a href="/translator" data-route="/translator" class="text-muted hover:text-ink transition">Translator</a>
+        <a href="/about" data-route="/about" class="text-muted hover:text-ink transition">About Us</a>
+        <a href="/contact" data-route="/contact" class="text-muted hover:text-ink transition">Contact Us</a>
+        <a href="/privacy" data-route="/privacy" class="text-muted hover:text-ink transition">Privacy Policy</a>
+        <a href="/terms" data-route="/terms" class="text-muted hover:text-ink transition">Terms of Service</a>
+      </nav>
       <div class="mt-5 pt-5 border-t border-line text-center text-sm text-muted">
         Designed by <span class="font-semibold text-grad">CP7 Technologies</span>
       </div>
@@ -448,7 +473,7 @@ Object.entries(TOOLS).forEach(([key,t])=>{ const grid=root.querySelector(`[data-
     </div>
     <h3 class="font-display font-semibold text-[15px] tracking-tight text-ink">${t.title}</h3>
     <p class="text-xs text-muted mt-1 leading-snug">${t.desc}</p>`;
-  c.addEventListener("click",()=>selectTool(key)); grid.appendChild(c); });
+  c.addEventListener("click",()=>{ (window.__navigate?window.__navigate("/pdf/"+key):selectTool(key)); }); grid.appendChild(c); });
 
 const srv=document.createElement("section"); srv.dataset.cat="server";
 srv.innerHTML=`<div class="flex items-center gap-2 mb-4"><h2 class="font-display font-semibold text-xl tracking-tight">Needs a server</h2><span class="text-xs text-muted bg-line/70 px-2 py-1 rounded-full">Not available in-browser</span></div><div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>`;
@@ -483,7 +508,7 @@ function selectTool(key){ currentTool=key; const t=TOOLS[key];
   if(catSec) catSec.insertAdjacentElement("afterend", workspace);
   workspace.classList.remove("hidden"); renderPreviews(); renderOptions();
   requestAnimationFrame(()=>{ const y=workspace.getBoundingClientRect().top+window.pageYOffset-76; window.scrollTo({top:y,behavior:"smooth"}); }); }
-document.getElementById("wsClose").addEventListener("click",()=>{ workspace.classList.add("hidden"); const t=TOOLS[currentTool]; const catSec=t?root.querySelector('section[data-cat="'+t.cat+'"]'):null; (catSec||root).scrollIntoView({behavior:"smooth",block:"start"}); });
+document.getElementById("wsClose").addEventListener("click",()=>{ workspace.classList.add("hidden"); const t=TOOLS[currentTool]; const catSec=t?root.querySelector('section[data-cat="'+t.cat+'"]'):null; if(window.__navigate){ try{ history.replaceState(null,"","/pdf"); }catch(e){} } (catSec||root).scrollIntoView({behavior:"smooth",block:"start"}); });
 
 dropzone.addEventListener("click",()=>fileInput.click());
 dropzone.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();fileInput.click();} });
@@ -831,27 +856,127 @@ installBtn?.addEventListener("click", async () => { if (!deferredPrompt) return;
 window.addEventListener("appinstalled", () => { installBtn?.classList.add("hidden"); });
 </script>
 <script>
-/* ============ view router: home / files / units ============ */
+/* ============ path-based router ============ */
 (function(){
-  const views = { home:document.getElementById("view-home"), files:document.getElementById("view-files"), units:document.getElementById("view-units"), translate:document.getElementById("view-translate") };
-  let unitsInit = false, translateInit = false;
-  function show(v){
-    Object.entries(views).forEach(([k,el])=>{ if(el) el.classList.toggle("hidden", k!==v); });
-    if(v==="units" && !unitsInit){ initUnitConverter(); unitsInit = true; }
-    if(v==="translate" && !translateInit){ initTranslator(); translateInit = true; }
-    window.scrollTo({top:0, behavior:"auto"});
-    try{ history.replaceState(null,"", v==="home"?"#":"#"+v); }catch(e){}
+  const views = { home:document.getElementById("view-home"), files:document.getElementById("view-files"), units:document.getElementById("view-units"), translate:document.getElementById("view-translate"), legal:document.getElementById("view-legal") };
+  let unitsInit=false, translateInit=false;
+  // map URL category segment -> unit-converter key, and back
+  const CAT2KEY={ length:"length", weight:"mass", mass:"mass", temperature:"temp", temp:"temp", area:"area", volume:"volume", speed:"speed", data:"data", time:"time", currency:"currency" };
+  const KEY2CAT={ length:"length", mass:"weight", temp:"temperature", area:"area", volume:"volume", speed:"speed", data:"data", time:"time", currency:"currency" };
+
+  const LEGAL={
+    privacy:{ title:"Privacy Policy", html:`
+      <p class="text-muted">Last updated: 2025. My Convert Box is operated by CP7 Technologies.</p>
+      <h3>The short version</h3>
+      <p>My Convert Box is built to be private by design. Your files and text are processed entirely inside your own browser on your device. We do not have a server that receives, stores, or sees your documents.</p>
+      <h3>What we collect</h3>
+      <p><strong>Nothing.</strong> We do not use analytics, tracking pixels, or advertising. We do not require an account, an email, or any sign-up. We do not build user profiles.</p>
+      <h3>Your files</h3>
+      <p>When you merge, split, convert, compress, OCR, sign, or otherwise process a file, that work happens locally in your browser using open-source libraries (pdf-lib, pdf.js, Tesseract, and others). Files are never uploaded to us.</p>
+      <h3>Translation feature</h3>
+      <p>The Translator sends the text you choose to translate to Google's public translation endpoint so it can be translated and (optionally) read aloud. This is the only feature that sends data off your device, and only the text you submit for translation is sent. If you never use the Translator, nothing leaves your browser.</p>
+      <h3>Cookies &amp; local storage</h3>
+      <p>We do not set advertising or tracking cookies. If you install the app or use it offline, your browser may cache the site's files (via a service worker) so it loads without a connection. That cache lives only on your device and can be cleared anytime from your browser settings.</p>
+      <h3>Third-party services</h3>
+      <p>The site loads open-source libraries and fonts from public CDNs, and the Translator uses Google's translation endpoint as described above. Those providers may see standard technical request data (like your IP address) as part of delivering their files — this is normal for any website and is not shared with us.</p>
+      <h3>Children</h3>
+      <p>The service is general-purpose and not directed at children under 13.</p>
+      <h3>Contact</h3>
+      <p>Questions about privacy? Email <a href="mailto:Behonest1418@gmail.com" class="text-brand">Behonest1418@gmail.com</a>.</p>` },
+    terms:{ title:"Terms of Service", html:`
+      <p class="text-muted">Last updated: 2025.</p>
+      <h3>Acceptance</h3>
+      <p>By using My Convert Box you agree to these terms. If you do not agree, please do not use the site.</p>
+      <h3>The service</h3>
+      <p>My Convert Box provides free, browser-based tools for working with PDFs, images, unit conversions, and translation. The tools run on your own device.</p>
+      <h3>Acceptable use</h3>
+      <p>You agree to use the tools only for lawful purposes and only with content you have the right to process. You are solely responsible for the files and text you use with the service.</p>
+      <h3>No warranty</h3>
+      <p>The service is provided "as is", without warranties of any kind. While we aim for accurate results, we do not guarantee that any conversion, compression, extraction, or translation will be error-free or fit for a particular purpose. Always keep a backup of important files and verify important results.</p>
+      <h3>Limitation of liability</h3>
+      <p>To the maximum extent permitted by law, CP7 Technologies is not liable for any loss or damage arising from your use of the service, including loss of data or inaccurate output.</p>
+      <h3>Third-party components</h3>
+      <p>The site uses open-source libraries and, for translation, Google's public endpoint. Their availability is outside our control and may change.</p>
+      <h3>Changes</h3>
+      <p>We may update these terms from time to time. Continued use after changes means you accept the updated terms.</p>
+      <h3>Contact</h3>
+      <p>Email <a href="mailto:Behonest1418@gmail.com" class="text-brand">Behonest1418@gmail.com</a>.</p>` },
+    about:{ title:"About Us", html:`
+      <p>My Convert Box is a free, all-in-one toolkit for everyday document and data tasks — converting and editing PDFs, turning images into PDFs, reading text from scans, converting units and currencies, and translating text, files and voice across dozens of languages.</p>
+      <h3>Our approach</h3>
+      <p>We believe simple tools should be genuinely private. That's why My Convert Box does its work right inside your browser wherever possible — no accounts, no uploads for the file tools, no tracking, and no watermarks on your results.</p>
+      <h3>Who we are</h3>
+      <p>My Convert Box is designed and built by <strong>CP7 Technologies</strong>, focused on creating clean, useful, privacy-respecting web tools that anyone can use for free.</p>
+      <h3>Get in touch</h3>
+      <p>We'd love your feedback and feature ideas: <a href="mailto:Behonest1418@gmail.com" class="text-brand">Behonest1418@gmail.com</a>.</p>` },
+    contact:{ title:"Contact Us", html:`
+      <p>Have a question, found a bug, or want to suggest a feature? We'd love to hear from you.</p>
+      <div class="mt-5 rounded-2xl border border-line bg-surface p-6 text-center">
+        <p class="text-muted text-sm">Email us at</p>
+        <a href="mailto:Behonest1418@gmail.com" class="inline-block mt-1 font-display font-bold text-xl text-brand break-all">Behonest1418@gmail.com</a>
+      </div>
+      <p class="mt-5 text-sm text-muted">My Convert Box is built by CP7 Technologies. We usually reply within a few days.</p>` },
+  };
+
+  function renderLegal(key){
+    const L=LEGAL[key]||LEGAL.privacy;
+    document.getElementById("legal-title").textContent=L.title;
+    document.getElementById("legal-body").innerHTML=L.html;
   }
+
+  function show(view){
+    Object.entries(views).forEach(([k,el])=>{ if(el) el.classList.toggle("hidden", k!==view); });
+    if(view==="units" && !unitsInit){ initUnitConverter(); unitsInit=true; }
+    if(view==="translate" && !translateInit){ initTranslator(); translateInit=true; }
+  }
+
+  function parse(path){
+    const p=(path||"/").replace(/\/+$/,"")||"/";
+    const seg=p.split("/").filter(Boolean); // e.g. ['pdf','merge']
+    if(seg.length===0) return {view:"home"};
+    if(seg[0]==="pdf") return {view:"files", tool:seg[1]||null};
+    if(seg[0]==="converter") return {view:"units", cat:seg[1]||null};
+    if(seg[0]==="translator") return {view:"translate"};
+    if(["privacy","terms","about","contact"].includes(seg[0])) return {view:"legal", legal:seg[0]};
+    return {view:"home"};
+  }
+
+  function render(path){
+    const r=parse(path);
+    show(r.view);
+    if(r.view==="legal"){ renderLegal(r.legal); window.scrollTo({top:0,behavior:"auto"}); return; }
+    if(r.view==="units"){ if(r.cat && CAT2KEY[r.cat]){ try{ selectUCat(CAT2KEY[r.cat]); }catch(e){} } window.scrollTo({top:0,behavior:"auto"}); return; }
+    if(r.view==="files"){
+      window.scrollTo({top:0,behavior:"auto"});
+      if(r.tool && TOOLS[r.tool]){ selectTool(r.tool); }
+      else { const ws=document.getElementById("workspace"); if(ws) ws.classList.add("hidden"); }
+      return;
+    }
+    window.scrollTo({top:0,behavior:"auto"});
+  }
+
+  function navigate(path, replace){
+    try{ replace ? history.replaceState(null,"",path) : history.pushState(null,"",path); }catch(e){}
+    render(path);
+  }
+  window.__navigate = navigate;
+  // legacy alias so existing data-go handlers keep working
+  const GO2PATH={ home:"/", files:"/pdf", units:"/converter", translate:"/translator" };
+  window.__showView = (v)=>navigate(GO2PATH[v]||"/");
+
   document.addEventListener("click", (e)=>{
-    const btn = e.target.closest("[data-go]");
-    if(!btn) return;
-    e.preventDefault();
-    show(btn.getAttribute("data-go"));
+    const go=e.target.closest("[data-go]");
+    if(go){ e.preventDefault(); navigate(GO2PATH[go.getAttribute("data-go")]||"/"); return; }
+    const rt=e.target.closest("[data-route]");
+    if(rt){ e.preventDefault(); navigate(rt.getAttribute("data-route")); return; }
   });
-  // deep-link support
-  const h = (location.hash||"").replace("#","");
-  show(h==="files"||h==="units"||h==="translate" ? h : "home");
-  window.__showView = show;
+  window.addEventListener("popstate", ()=>render(location.pathname));
+
+  // expose helpers for tool/category deep-linking from elsewhere
+  window.__toolPath = (key)=>"/pdf/"+key;
+  window.__catPath = (key)=>"/converter/"+(KEY2CAT[key]||key);
+
+  render(location.pathname);
 })();
 
 /* ============ Unit Converter ============ */
@@ -875,7 +1000,7 @@ function initUnitConverter(){
     const b = document.createElement("button");
     b.textContent = c.label; b.dataset.k = k;
     b.className = "px-4 py-2 rounded-full text-sm font-semibold border transition " + (k===ucKey ? "grad-brand text-white border-transparent shadow-sm" : "bg-surface border-line text-muted hover:text-ink");
-    b.addEventListener("click", ()=>selectUCat(k));
+    b.addEventListener("click", ()=>{ if(window.__navigate){ const m={length:"length",mass:"weight",temp:"temperature",area:"area",volume:"volume",speed:"speed",data:"data",time:"time",currency:"currency"}; history.replaceState(null,"","/converter/"+(m[k]||k)); } selectUCat(k); });
     cats.appendChild(b);
   });
   document.getElementById("uc-in").addEventListener("input", ucCompute);
