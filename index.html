@@ -1358,23 +1358,34 @@ function initTranslator(){
   function playChunk(){
     const a=$("trAudio"); if(chunkIndex>=chunks.length){ $("trPlayBtn").textContent="▶ Play"; audioReady=false; return; }
     const gender=$("trGender").value, speed=parseFloat($("trSpeed").value);
-    a.src=`https://translate.googleapis.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(chunks[chunkIndex])}&tl=${tgtValue}&client=gtx&ttsspeed=1`;
+    const q=chunks[chunkIndex];
+    a.src=`https://translate.googleapis.com/translate_tts?ie=UTF-8&tl=${encodeURIComponent(tgtValue)}&client=tw-ob&ttsspeed=1&total=${chunks.length}&idx=${chunkIndex}&textlen=${q.length}&q=${encodeURIComponent(q)}`;
     a.preservesPitch=false; a.mozPreservesPitch=false; a.playbackRate=gender==="male"?speed*0.82:speed*1.05; audioReady=true;
+    let handled=false;
+    const fail=()=>{ if(handled) return; handled=true; a.onerror=null; audioReady=false; $("trPlayBtn").textContent="▶ Play"; useBrowserSpeech(); };
     a.onended=()=>{ chunkIndex++; if(chunkIndex<chunks.length) playChunk(); else { audioReady=false; $("trPlayBtn").textContent="▶ Play"; } };
-    a.onerror=()=>{ audioReady=false; $("trPlayBtn").textContent="▶ Play"; useBrowserSpeech(); };
-    a.play().catch(()=>{ audioReady=false; $("trPlayBtn").textContent="▶ Play"; useBrowserSpeech(); });
+    a.onerror=fail;
+    a.play().then(()=>{ $("trPlayBtn").textContent="⏸ Pause"; }).catch(fail);
   }
   function useBrowserSpeech(){
-    if(!("speechSynthesis" in window)){ note("❌ Audio not supported"); return; }
+    if(!("speechSynthesis" in window)){ note("❌ Audio playback isn't supported in this browser. The translated text is ready to copy."); $("trPlayBtn").textContent="▶ Play"; return; }
     window.speechSynthesis.cancel();
-    const utt=new SpeechSynthesisUtterance(translatedText); utt.lang=VOICE_LOCALES[tgtValue]||"en-US"; utt.rate=parseFloat($("trSpeed").value);
+    const locale=VOICE_LOCALES[tgtValue]||"en-US";
+    const utt=new SpeechSynthesisUtterance(translatedText); utt.lang=locale; utt.rate=parseFloat($("trSpeed").value);
     const gender=$("trGender").value;
-    const trySpeak=()=>{ const voices=window.speechSynthesis.getVoices(); const lc=(VOICE_LOCALES[tgtValue]||"en-US").split("-")[0]; const lv=voices.filter(v=>v.lang.startsWith(lc));
+    let done=false;
+    const speak=()=>{ if(done) return; done=true;
+      const voices=window.speechSynthesis.getVoices()||[]; const lc=locale.split("-")[0];
+      const lv=voices.filter(v=>v.lang && v.lang.toLowerCase().startsWith(lc));
       const fKw=["female","woman","zira","susan","victoria","samantha","karen","moira"], mKw=["male","man","david","mark","james","daniel","fred"]; const kw=gender==="female"?fKw:mKw;
-      const match=lv.find(v=>kw.some(k=>v.name.toLowerCase().includes(k)))||lv[0]; if(match)utt.voice=match;
-      utt.onstart=()=>$("trPlayBtn").textContent="⏸ Pause"; utt.onend=utt.onerror=()=>$("trPlayBtn").textContent="▶ Play"; window.speechSynthesis.speak(utt); };
-    window.speechSynthesis.getVoices().length===0?window.speechSynthesis.onvoiceschanged=trySpeak:trySpeak();
-    note("🔊 Using browser voice");
+      const match=lv.find(v=>kw.some(k=>v.name.toLowerCase().includes(k)))||lv[0];
+      if(!match){ note("⚠️ Online audio is unavailable and your device has no "+(LANG_NAMES[tgtValue]||"this language")+" voice installed, so it can't be read aloud. The translated text is ready to copy."); $("trPlayBtn").textContent="▶ Play"; return; }
+      utt.voice=match; utt.lang=match.lang;
+      utt.onstart=()=>$("trPlayBtn").textContent="⏸ Pause"; utt.onend=utt.onerror=()=>$("trPlayBtn").textContent="▶ Play";
+      window.speechSynthesis.speak(utt); note("🔊 Using your device's voice");
+    };
+    if(window.speechSynthesis.getVoices().length===0){ window.speechSynthesis.onvoiceschanged=speak; setTimeout(speak,350); }
+    else speak();
   }
   function stopAudio(){ const a=$("trAudio"); a.onended=null; a.onerror=null; a.pause(); a.src=""; audioReady=false; chunkIndex=0; chunks=[]; window.speechSynthesis.cancel(); $("trPlayBtn").textContent="▶ Play"; }
 
